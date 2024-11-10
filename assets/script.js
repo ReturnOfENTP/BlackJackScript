@@ -65,7 +65,7 @@ function checkResults(userHand, dealerHand) {
         userWin++;
     } 
     else if (userTotal < dealerTotal) {
-        console.log("DO BETTER! You exceeded 21, LOOSER!");
+        console.log("DO BETTER! DEALER BEAT YO ASS, LOOSER!");
         userLoss++;
     } 
     else {
@@ -77,12 +77,28 @@ function checkResults(userHand, dealerHand) {
 function userEntry(deck) {
     const userHand = [getCard(deck), getCard(deck)];  
     console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(".")} (Total: ${calculateHand(userHand)})`);
+    displayHand(userHand,"user-hand");
     return userHand;
+}
+
+function displayHand(hand,containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ""; //Clear Previous Hand
+    
+    hand.forEach(card => {
+        const img = document.createElement("img");
+        img.src = `images/cards/${card.value}_of_${card.suit.toLowerCase()}.jpg`;
+        img.alt = `${card.value} of ${card.suit}`;
+        img.classList.add("card-image"); //CSS Class for Style 
+        container.appendChild(img);
+
+    });
 }
 
 function dealerEntry(deck) {
     const dealerHand = [getCard(deck), getCard(deck)];  
     console.log(`Dealer's hand: ${dealerHand[0].value} of ${dealerHand[0].suit}, ?`);
+    displayHand(dealerHand, "dealer-hand");
     return dealerHand;
 }
 
@@ -95,6 +111,7 @@ function runGame() {
     let userAction = prompt("Do you want to 'hit' or 'stand'?").toLowerCase();
     while (userAction === "hit" && calculateHand(userHand) < 21) {
         userHand.push(getCard(deck));
+        displayHand(userHand, "user-hand"); //New Cards Updates
         console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(userHand)})`);
         if (calculateHand(userHand) >= 21) {
             break;
@@ -108,6 +125,7 @@ function runGame() {
     }
 
     console.log(`Dealer's final hand: ${dealerHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(dealerHand)})`);
+    displayHand(dealerHand, "dealer-hand"); //Shows Dealer Final Cards/Final Hand
     checkResults(userHand, dealerHand);
 }
 

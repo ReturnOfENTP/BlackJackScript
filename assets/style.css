@@ -1,0 +1,45 @@
+.hand-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.card-image {
+    width: 100px;  /* Adjust as needed */
+    height: auto;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+/* Style for the container that holds the cards */
+#user-hand, #dealer-hand {
+    display: flex;
+    gap: 10px;  /* Space between the cards */
+    justify-content: center;  /* Center the cards within the container */
+    flex-wrap: wrap;  /* Allow cards to wrap if there are too many */
+    margin-top: 20px;
+}
+
+/* Style for each card image */
+.card-image {
+    width: 100px;  /* Adjust the size of the cards */
+    height: auto;  /* Maintain aspect ratio */
+    border-radius: 5px;  /* Optional: rounded corners */
+    box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2);  /* Optional: add a shadow */
+    transition: transform 0.2s ease-in-out;  /* Smooth transition on hover */
+}
+
+/* Optional: Card hover effect */
+.card-image:hover {
+    transform: scale(1.1);  /* Slightly enlarge the card on hover */
+}
+
+/* Optional: Style for the dealer hand */
+#dealer-hand {
+    margin-top: 20px;
+}
+
+/* Optional: Style for the user hand */
+#user-hand {
+    margin-top: 20px;
+}
