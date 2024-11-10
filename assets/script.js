@@ -2,61 +2,100 @@ let userWin = 0;
 let userTie = 0;
 let userLoss = 0;
 
-function getCard() {
-    // Cards are typically valued between 2 and 11, with face cards being 10 and Ace as 11
-    const cardValue = Math.floor(Math.random() * 11) + 1;
-    return cardValue;
+
+function getDeck() {
+    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
+    const deck = []; 
+
+    for (const suit of suits) {
+        for (const value of values) {
+            deck.push({ value, suit });
+        }
+    }
+    return deck; 
+}
+
+function getCard(deck) {
+    const randomIndex = Math.floor(Math.random() * deck.length);
+    return deck.splice(randomIndex, 1)[0];
 }
 
 function calculateHand(hand) {
-    return hand.reduce((total, card) => total + card, 0);
+    let total = 0;
+    let aces = 0;
+
+    hand.forEach(card => {
+        if (["J", "Q", "K"].includes(card.value)) {
+            total += 10;
+        } else if (card.value === "A") {
+            total += 11;
+            aces += 1;
+        } else {
+            total += card.value;
+        }
+});
+
+while (total > 21 && aces > 0) {
+    total -= 10;
+    total -= 1;
+}
+
+return total;
 }
 
 function checkResults(userHand, dealerHand) {
     const userTotal = calculateHand(userHand);
     const dealerTotal = calculateHand(dealerHand);
     
-    if (userTotal > 21) {
-        console.log("DO BETTER! You exceeded 21, Looser!");
+    if (userTotal === 21) {
+        console.log ("WELL FUCK ME, 21");
+        userWin++
+    } 
+    else if (userTotal > 21) {
+        console.log("POOR EFFORT! ITS A BUST, LOOSER!");
         userLoss++;
-    } else if (dealerTotal > 21) {
-        console.log("Dealer busts! WINNER WINNER!");
+    } 
+    else if (dealerTotal > 21) {
+        console.log("DEALER BUST! YOU WIN BIG STEPA!");
         userWin++;
-    } else if (userTotal > dealerTotal) {
-        console.log("WINNER!");
+    } 
+    else if (userTotal > dealerTotal) {
+        console.log("BIG WINNER!");
         userWin++;
-    } else if (userTotal < dealerTotal) {
+    } 
+    else if (userTotal < dealerTotal) {
         console.log("DO BETTER! You exceeded 21, LOOSER!");
         userLoss++;
-    } else {
-        console.log("It's a tie Bitch!");
+    } 
+    else {
+        console.log("It's a tie lil'Bitch!");
         userTie++;
     }
 }
 
-function userEntry() {
-    let userHand = [];
-    userHand.push(getCard(), getCard());  
-    console.log(`Your hand: ${userHand.join(", ")} (Total: ${calculateHand(userHand)})`);
+function userEntry(deck) {
+    const userHand = [getCard(deck), getCard(deck)];  
+    console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(".")} (Total: ${calculateHand(userHand)})`);
     return userHand;
 }
 
-function dealerEntry() {
-    let dealerHand = [];
-    dealerHand.push(getCard(), getCard());  
-    console.log(`Dealer's hand: ${dealerHand[0]}, ?`);
+function dealerEntry(deck) {
+    const dealerHand = [getCard(deck), getCard(deck)];  
+    console.log(`Dealer's hand: ${dealerHand[0].value} of ${dealerHand[0].suit}, ?`);
     return dealerHand;
 }
 
 function runGame() {
-    const userHand = userEntry();
-    let dealerHand = dealerEntry();
+    const deck = getDeck();
+    const userHand = userEntry(deck);
+    let dealerHand = dealerEntry(deck);
 
-    // USER: HIT OR STAND
+
     let userAction = prompt("Do you want to 'hit' or 'stand'?").toLowerCase();
     while (userAction === "hit" && calculateHand(userHand) < 21) {
-        userHand.push(getCard());
-        console.log(`Your hand: ${userHand.join(", ")} (Total: ${calculateHand(userHand)})`);
+        userHand.push(getCard(deck));
+        console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(userHand)})`);
         if (calculateHand(userHand) >= 21) {
             break;
         }
@@ -65,9 +104,11 @@ function runGame() {
 
     // DEALER: HIT BELOW 17
     while (calculateHand(dealerHand) < 17) {
-        dealerHand.push(getCard());
+        dealerHand.push(getCard(deck));
     }
 
-    console.log(`Dealer's final hand: ${dealerHand.join(", ")} (Total: ${calculateHand(dealerHand)})`);
+    console.log(`Dealer's final hand: ${dealerHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(dealerHand)})`);
     checkResults(userHand, dealerHand);
 }
+
+runGame(); 
