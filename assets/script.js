@@ -38,7 +38,7 @@ function calculateHand(hand) {
 
 while (total > 21 && aces > 0) {
     total -= 10;
-    total -= 1;
+    aces -= 1;
 }
 
 return total;
@@ -48,27 +48,22 @@ function checkResults(userHand, dealerHand) {
     const userTotal = calculateHand(userHand);
     const dealerTotal = calculateHand(dealerHand);
     
-    if (userTotal === 21) {
-        console.log ("WELL FUCK ME, 21");
-        userWin++
-    } 
-    else if (userTotal > 21) {
+    if (userTotal === 21 && userHand.length === 2) {
+        console.log("WELL FUCK ME, 21");
+        userWin++;
+    } else if (userTotal > 21) {
         console.log("POOR EFFORT! ITS A BUST, LOOSER!");
         userLoss++;
-    } 
-    else if (dealerTotal > 21) {
+    } else if (dealerTotal > 21) {
         console.log("DEALER BUST! YOU WIN BIG STEPA!");
         userWin++;
-    } 
-    else if (userTotal > dealerTotal) {
+    } else if (userTotal > dealerTotal) {
         console.log("BIG WINNER!");
         userWin++;
-    } 
-    else if (userTotal < dealerTotal) {
+    } else if (userTotal < dealerTotal) {
         console.log("DO BETTER! DEALER BEAT YO ASS, LOOSER!");
         userLoss++;
-    } 
-    else {
+    } else {
         console.log("It's a tie lil'Bitch!");
         userTie++;
     }
