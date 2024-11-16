@@ -1,127 +1,211 @@
-let userWin = 0;
-let userTie = 0;
-let userLoss = 0;
+// LOAD THE GAME IN FK'N THE DOM
+document.addEventListener("DOMContentLoaded", function () {
 
+    let userWin = 0;
+    let userTie = 0;
+    let userLoss = 0;
 
-function getDeck() {
-    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
-    const deck = []; 
+    let userHand = [];
+    let dealerHand = [];
+    let deck = [];
+    let gameInProgress = false; // Flag to check if the game is live
 
-    for (const suit of suits) {
-        for (const value of values) {
-            deck.push({ value, suit });
+    // INITIALIZE THE DECK
+    function getDeck() {
+        const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+        const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
+        const deck = [];
+        for (const suit of suits) {
+            for (const value of values) {
+                deck.push({ value, suit });
+            }
+        }
+        return deck;
+    }
+
+    // DRAW RANDOM CARD
+    function getCard(deck) {
+        const randomIndex = Math.floor(Math.random() * deck.length);
+        return deck[randomIndex]; // Return the card at the random index
+    }
+
+    // CALCULATE TOTAL VALUE OF HAND
+    function calculateHand(hand) {
+        let total = 0;
+        let aces = 0;
+
+        hand.forEach(card => {
+            if (["J", "Q", "K"].includes(card.value)) {
+                total += 10;
+            } else if (card.value === "A") {
+                total += 11;
+                aces += 1;
+            } else {
+                total += card.value;
+            }
+        });
+
+        // Adjust for aces if total exceeds 21
+        while (total > 21 && aces > 0) {
+            total -= 11;
+            aces -= 1;
+        }
+
+        return total;
+    }
+
+    // DISPLAY HAND
+    function displayHand(hand, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Clear previous hand
+
+        hand.forEach(card => {
+            const img = document.createElement("img");
+
+            // Check if card is face down
+            if (card.value === "Face Down") {
+                img.src = "images/cards/face_down.jpg";  // Path to the face-down card
+                img.alt = "face down card";
+                img.classList.add("card-image", "face-down");
+            } else {
+                // Path for visible cards (using the value and suit)
+                const value = card.value.toString().toLowerCase(); // Ensure the value is lowercase 
+                const suit = card.suit.toLowerCase();
+                
+                img.src = `images/cards/${value}_of_${suit}.jpg`;
+                img.alt = `${card.value} of ${card.suit}`;
+                img.classList.add("card-image");
+            }
+
+            container.appendChild(img);
+        });
+    }
+
+    // SEND GAME TO DOM
+    function updateGameResults() {
+        const resultContainer = document.getElementById("game-result");
+        resultContainer.textContent = `Results: Wins: ${userWin}, Ties: ${userTie}, Losses: ${userLoss}`;
+    }
+
+    // HIT ACTION
+    function hit() {
+        if (!gameInProgress) return; // You need to be in the game if you want to ride with us
+
+        const newCard = getCard(deck);
+        if (!newCard) return;
+
+        userHand.push(newCard);
+        displayHand(userHand, "user-hand");
+
+        const userTotal = calculateHand(userHand);
+        console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+
+        if (userTotal > 21) {
+            console.log("YOU BUSTED!");
+            userLoss++;
+            endGame("YOU BUSTED!");
         }
     }
-    return deck; 
-}
 
-function getCard(deck) {
-    const randomIndex = Math.floor(Math.random() * deck.length);
-    return deck.splice(randomIndex, 1)[0];
-}
+    // HANDLE A STAND ACTION
+    function stand() {
+        if (!gameInProgress) return; // Do nothing if no game is in progress
 
-function calculateHand(hand) {
-    let total = 0;
-    let aces = 0;
+        console.log("Weak Ass, You stand.");
 
-    hand.forEach(card => {
-        if (["J", "Q", "K"].includes(card.value)) {
-            total += 10;
-        } else if (card.value === "A") {
-            total += 11;
-            aces += 1;
+        // SHOW THAT SECOND DEALER CARD
+        displayHand(dealerHand, "dealer-hand"); // Show both dealer cards
+
+        const userTotal = calculateHand(userHand);
+
+        // DEALER: DRAW CARDS UNTIL HE HITS 17 OR MORE ADDED:(Casino rule - dealer hits on soft 17)
+        while (calculateHand(dealerHand) < 17 || (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))) {
+            const card = getCard(deck);
+            if (!card) break;
+            dealerHand.push(card);
+            displayHand(dealerHand, "dealer-hand");
+        }
+
+        const dealerTotal = calculateHand(dealerHand);
+        console.log(`Dealer's hand: ${dealerHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${dealerTotal})`);
+
+        // Check results after the dealer is done
+        checkResults(userHand, dealerHand);
+        endGame("Game Over!");
+    }
+
+    // DETERMINE OUTCOME
+    function checkResults(userHand, dealerHand) {
+        const userTotal = calculateHand(userHand);
+        const dealerTotal = calculateHand(dealerHand);
+
+        if (userTotal > 21) {
+            console.log("YOU BUSTED!");
+            userLoss++;
+        } else if (dealerTotal > 21) {
+            console.log("DEALER BUSTED! YOU WIN!");
+            userWin++;
+        } else if (userTotal > dealerTotal) {
+            console.log("YOU WIN!");
+            userWin++;
+        } else if (userTotal < dealerTotal) {
+            console.log("DEALER WINS!");
+            userLoss++;
         } else {
-            total += card.value;
+            console.log("IT'S A TIE!");
+            userTie++;
         }
-});
 
-while (total > 21 && aces > 0) {
-    total -= 10;
-    aces -= 1;
-}
-
-return total;
-}
-
-function checkResults(userHand, dealerHand) {
-    const userTotal = calculateHand(userHand);
-    const dealerTotal = calculateHand(dealerHand);
-    
-    if (userTotal === 21 && userHand.length === 2) {
-        console.log("WELL FUCK ME, 21");
-        userWin++;
-    } else if (userTotal > 21) {
-        console.log("POOR EFFORT! ITS A BUST, LOOSER!");
-        userLoss++;
-    } else if (dealerTotal > 21) {
-        console.log("DEALER BUST! YOU WIN BIG STEPA!");
-        userWin++;
-    } else if (userTotal > dealerTotal) {
-        console.log("BIG WINNER!");
-        userWin++;
-    } else if (userTotal < dealerTotal) {
-        console.log("DO BETTER! DEALER BEAT YO ASS, LOOSER!");
-        userLoss++;
-    } else {
-        console.log("It's a tie lil'Bitch!");
-        userTie++;
+        updateGameResults();
     }
-}
 
-function userEntry(deck) {
-    const userHand = [getCard(deck), getCard(deck)];  
-    console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(".")} (Total: ${calculateHand(userHand)})`);
-    displayHand(userHand,"user-hand");
-    return userHand;
-}
+    // END GAME
+    function endGame(message) {
+        gameInProgress = false; // End the game
+        updateGameResults();
+        document.getElementById("hit-button").disabled = true;
+        document.getElementById("stand-button").disabled = true;
+        document.getElementById("new-game-button").disabled = false; 
+    }
 
-function displayHand(hand,containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = ""; //Clear Previous Hand
-    
-    hand.forEach(card => {
-        const img = document.createElement("img");
-        img.src = `images/cards/${card.value}_of_${card.suit.toLowerCase()}.jpg`;
-        img.alt = `${card.value} of ${card.suit}`;
-        img.classList.add("card-image"); //CSS Class for Style 
-        container.appendChild(img);
+    // START NEW GAME
+    function startNewGame() {
+        // Reset hands and deck
+        deck = getDeck();
+        userHand = [getCard(deck), getCard(deck)];
+        dealerHand = [getCard(deck), getCard(deck)];
 
-    });
-}
+        // DISPLAY CARDS + DEALER 2ND CARD FACE DOWN
+        displayHand(userHand, "user-hand");
 
-function dealerEntry(deck) {
-    const dealerHand = [getCard(deck), getCard(deck)];  
-    console.log(`Dealer's hand: ${dealerHand[0].value} of ${dealerHand[0].suit}, ?`);
-    displayHand(dealerHand, "dealer-hand");
-    return dealerHand;
-}
+        // Set dealer hand with a face-down card for the second card
+        const faceDownCard = { value: "Face Down", suit: "unknown" };
+        const dealerHandWithFaceDown = [dealerHand[0], faceDownCard];
 
-function runGame() {
-    const deck = getDeck();
-    const userHand = userEntry(deck);
-    let dealerHand = dealerEntry(deck);
+        displayHand(dealerHandWithFaceDown, "dealer-hand");
 
+        // RESET CONSOLE LOG GAME MESSAGES
+        const resultContainer = document.getElementById("game-result");
+        resultContainer.textContent = "";
 
-    let userAction = prompt("Do you want to 'hit' or 'stand'?").toLowerCase();
-    while (userAction === "hit" && calculateHand(userHand) < 21) {
-        userHand.push(getCard(deck));
-        displayHand(userHand, "user-hand"); //New Cards Updates
+        // ENABLE BUTTONS (DISABLED)
+        document.getElementById("hit-button").disabled = false;
+        document.getElementById("stand-button").disabled = false;
+        document.getElementById("new-game-button").disabled = true;
+
+        // SET GAME IN PROGRESS
+        gameInProgress = true;
+
         console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(userHand)})`);
-        if (calculateHand(userHand) >= 21) {
-            break;
-        }
-        userAction = prompt("Do you want to 'hit' or 'stand'?").toLowerCase();
+        console.log(`Dealer's hand: ${dealerHand[0].value} of ${dealerHand[0].suit}, ?`);
     }
 
-    // DEALER: HIT BELOW 17
-    while (calculateHand(dealerHand) < 17) {
-        dealerHand.push(getCard(deck));
-    }
+    // EVENT LISTENERS FOR BUTTONS
+    document.getElementById("hit-button").addEventListener("click", hit);
+    document.getElementById("stand-button").addEventListener("click", stand);
+    document.getElementById("new-game-button").addEventListener("click", startNewGame);
 
-    console.log(`Dealer's final hand: ${dealerHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(dealerHand)})`);
-    displayHand(dealerHand, "dealer-hand"); //Shows Dealer Final Cards/Final Hand
-    checkResults(userHand, dealerHand);
-}
+    // START THE GAME
+    startNewGame();
 
-runGame(); 
+});

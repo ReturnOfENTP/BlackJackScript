@@ -1,3 +1,7 @@
+body {
+    background-color:rgb(38, 97, 79) ;
+}
+
 .hand-container {
     display: flex;
     gap: 10px;
@@ -5,7 +9,7 @@
 }
 
 .card-image {
-    width: 100px;  /* Adjust as needed */
+    width: 80px;  /* Adjust as needed */
     height: auto;
     border: 1px solid #333;
     border-radius: 5px;
@@ -29,17 +33,55 @@
     transition: transform 0.2s ease-in-out;  /* Smooth transition on hover */
 }
 
-/* Optional: Card hover effect */
+/* Card hover effect */
 .card-image:hover {
     transform: scale(1.1);  /* Slightly enlarge the card on hover */
 }
 
-/* Optional: Style for the dealer hand */
+/* Style for the dealer hand if ya want it*/
 #dealer-hand {
-    margin-top: 20px;
+    margin-top: 100px;
 }
 
 /* Optional: Style for the user hand */
 #user-hand {
-    margin-top: 20px;
+    margin-top: 75px;
 }
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;  /* Space above the buttons */
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green when hovered */
+}
+
+#game-results {
+    display:flex;
+    justify content: center;
+    
+}
+
+
+
+
+
+
+
+
+
+
