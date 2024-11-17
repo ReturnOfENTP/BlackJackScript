@@ -1,64 +1,87 @@
+/* General Body Styles */
 body {
-    background-color:rgb(38, 97, 79) ;
+    background-color: rgb(29, 7, 32); /* Background color */
+    font-family: Arial, sans-serif; /* Font for the page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full screen height */
+    margin: 0;
 }
 
+/* Wrapper for the game container */
+#game-container-wrapper {
+    background-color: rgb(38, 97, 79); /* White background for the game container */
+    padding: 20px;
+    border-radius: 80px;
+    border-width: 8px;
+    border: 8px solid rgb(244, 227, 173);
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Main container for cards and results */
+#game-container {
+    display: flex;
+    flex-direction: column; /* Stack dealer and user hands vertically */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* Flexbox container for dealer and user hands */
 .hand-container {
     display: flex;
-    gap: 10px;
-    margin: 10px 0;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0; /* Margin between hands */
 }
 
-.card-image {
-    width: 80px;  /* Adjust as needed */
-    height: auto;
-    border: 1px solid #333;
+/* Style for game results */
+#game-result {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
     border-radius: 5px;
+    margin: 20px 0; /* Space between hands and result */
 }
 
-/* Style for the container that holds the cards */
-#user-hand, #dealer-hand {
-    display: flex;
-    gap: 10px;  /* Space between the cards */
-    justify-content: center;  /* Center the cards within the container */
-    flex-wrap: wrap;  /* Allow cards to wrap if there are too many */
-    margin-top: 20px;
-}
-
-/* Style for each card image */
+/* Style for individual card images */
 .card-image {
-    width: 100px;  /* Adjust the size of the cards */
+    flex: 0 1 15vw;  /* Flex-grow is 0 (no grow), 1 is flex-shrink (doesn't shrink), 15vw for width */
     height: auto;  /* Maintain aspect ratio */
-    border-radius: 5px;  /* Optional: rounded corners */
-    box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2);  /* Optional: add a shadow */
+    max-width: 120px; /* Max width for cards to avoid too large */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2);
+    margin-right: 10px; /* Padding between cards */
     transition: transform 0.2s ease-in-out;  /* Smooth transition on hover */
 }
 
-/* Card hover effect */
+/* Hover effect for the card */
 .card-image:hover {
     transform: scale(1.1);  /* Slightly enlarge the card on hover */
 }
 
-/* Style for the dealer hand if ya want it*/
-#dealer-hand {
-    margin-top: 100px;
-}
-
-/* Optional: Style for the user hand */
-#user-hand {
-    margin-top: 75px;
-}
-
+/* Style for buttons */
 #button-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;  /* Space above the buttons */
+    margin-top: 20px;
 }
 
+/* Button styling */
 button {
     font-size: 16px;
     padding: 10px 20px;
     margin: 5px;
-    background-color: #4CAF50; /* Green button */
+    background-color: #007BFF; /* Blue button */
     color: white;
     border: none;
     border-radius: 5px;
@@ -67,21 +90,53 @@ button {
 }
 
 button:hover {
-    background-color: #45a049; /* Darker green when hovered */
+    background-color: #45a049; /* Green when hovered */
 }
 
-#game-results {
-    display:flex;
-    justify content: center;
-    
+/* Disabled button styles */
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
 }
 
+/* Dealer hand is on top */
+#dealer-hand {
+    margin-top: 20px;
+}
 
+/* User hand is below */
+#user-hand {
+    margin-top: 20px;
+}
 
+/* Optional: Adjust the game result container */
+#game-result {
+    margin-top: 20px;
+    font-size: 22px;
+}
 
+/* Adjust the game container wrapper in mobile mode */
+@media (max-width: 568px) {
+    #game-container-wrapper {
+        background-color: transparent; /* Make the wrapper background transparent */
+        box-shadow: none; /* Remove shadow */
+        padding: 0; /* Remove padding */
+        border-radius: 0; /* Remove rounded corners */
+        border: none;
+    }
 
+    /* Ensure cards and buttons remain functional */
+    #game-container {
+        width: 100%; /* Stretch the game container to the full width */
+        margin: 0;
+    }
 
+    .card-image {
+        margin: 5px; /* Maintain spacing between cards */
+    }
 
-
-
-
+    button {
+        width: 80%; /* Make buttons larger and easier to tap on mobile */
+        max-width: 300px;
+    }
+}

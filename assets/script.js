@@ -1,4 +1,4 @@
-// LOAD THE GAME IN FK'N THE DOM
+// LOAD THE GAME IN THE DOM
 document.addEventListener("DOMContentLoaded", function () {
 
     let userWin = 0;
@@ -36,18 +36,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         hand.forEach(card => {
             if (["J", "Q", "K"].includes(card.value)) {
-                total += 10;
+                total += 10; // Face cards are worth 10
             } else if (card.value === "A") {
-                total += 11;
-                aces += 1;
+                total += 11; // Aces start as 11
+                aces += 1; // Count the aces
             } else {
-                total += card.value;
+                total += card.value; // Number cards are worth their face value
             }
         });
 
         // Adjust for aces if total exceeds 21
         while (total > 21 && aces > 0) {
-            total -= 11;
+            total -= 10; // Change ace from 11 to 1
             aces -= 1;
         }
 
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // HIT ACTION
     function hit() {
-        if (!gameInProgress) return; // You need to be in the game if you want to ride with us
+        if (!gameInProgress) return; // You need to be in the game to hit
 
         const newCard = getCard(deck);
         if (!newCard) return;
@@ -158,6 +158,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateGameResults();
     }
+
+    //GAME RESULTS AFTER GAME ENDS 
+    function displayResult(resultMessage) {
+        console.log("Displaying result:", resultMessage);
+        const gameResult = document.getElementById("game-result");
+        gameResult.textContent = resultMessage; // Set the result message
+        gameResult.style.display = "block"; // Show the result container
+    }
+
+    // Example: When the game ends, display the result
+function endGame(resultMessage) {
+    // Show the result message
+    displayResult(resultMessage);
+
+    // Disable buttons or take any other end-game actions here
+    document.getElementById("hit-button").disabled = false;
+    document.getElementById("stand-button").disabled = false;
+}
 
     // END GAME
     function endGame(message) {
