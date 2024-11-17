@@ -1,4 +1,3 @@
-// LOAD THE GAME IN THE DOM
 document.addEventListener("DOMContentLoaded", function () {
 
     let userWin = 0;
@@ -159,31 +158,26 @@ document.addEventListener("DOMContentLoaded", function () {
         updateGameResults();
     }
 
-    //GAME RESULTS AFTER GAME ENDS 
+    // DISPLAY GAME RESULTS AFTER GAME ENDS
     function displayResult(resultMessage) {
-        console.log("Displaying result:", resultMessage);
         const gameResult = document.getElementById("game-result");
         gameResult.textContent = resultMessage; // Set the result message
-        gameResult.style.display = "block"; // Show the result container
+
+        // Show the result container with transition
+        gameResult.style.visibility = "visible";  // Make it visible
+        gameResult.style.opacity = "1";           // Fade it in
     }
 
-    // Example: When the game ends, display the result
-function endGame(resultMessage) {
-    // Show the result message
-    displayResult(resultMessage);
-
-    // Disable buttons or take any other end-game actions here
-    document.getElementById("hit-button").disabled = false;
-    document.getElementById("stand-button").disabled = false;
-}
-
     // END GAME
-    function endGame(message) {
+    function endGame(resultMessage) {
         gameInProgress = false; // End the game
-        updateGameResults();
+        updateGameResults();  // Update the stats
+        displayResult(` Wins: ${userWin} | Ties: ${userTie} | Losses: ${userLoss}`); // Show "Game Over" message with stats
+
+        // Disable buttons or take any other end-game actions here
         document.getElementById("hit-button").disabled = true;
         document.getElementById("stand-button").disabled = true;
-        document.getElementById("new-game-button").disabled = false; 
+        document.getElementById("new-game-button").disabled = false;
     }
 
     // START NEW GAME

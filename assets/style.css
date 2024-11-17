@@ -9,6 +9,20 @@ body {
     margin: 0;
 }
 
+#game-result {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    padding-top: 0px;
+    margin-top: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;                                          /* Fully transparent initially */
+    transition: opacity 1.5s ease-in, visibility 0s;   /* Transition opacity and visibility together */
+}
+
 /* Wrapper for the game container */
 #game-container-wrapper {
     background-color: rgb(38, 97, 79); /* White background for the game container */
@@ -39,18 +53,6 @@ body {
     justify-content: center;
     align-items: center;
     margin: 10px 0; /* Margin between hands */
-}
-
-/* Style for game results */
-#game-result {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    padding: 10px 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 5px;
-    margin: 20px 0; /* Space between hands and result */
 }
 
 /* Style for individual card images */
@@ -107,12 +109,6 @@ button:disabled {
 /* User hand is below */
 #user-hand {
     margin-top: 20px;
-}
-
-/* Optional: Adjust the game result container */
-#game-result {
-    margin-top: 20px;
-    font-size: 22px;
 }
 
 /* Adjust the game container wrapper in mobile mode */
