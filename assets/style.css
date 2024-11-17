@@ -27,7 +27,7 @@ body {
 #game-container-wrapper {
     background-color: rgb(38, 97, 79); /* White background for the game container */
     padding: 20px;
-    border-radius: 80px;
+    border-radius: 270px;
     border-width: 8px;
     border: 8px solid rgb(244, 227, 173);
     width: 90%;
@@ -77,6 +77,8 @@ body {
     justify-content: center;
     margin-top: 20px;
 }
+
+
 
 /* Button styling */
 button {
@@ -135,4 +137,32 @@ button:disabled {
         width: 80%; /* Make buttons larger and easier to tap on mobile */
         max-width: 300px;
     }
+}
+
+.split-hand {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.split-hand img {
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Positioning the left and right hands */
+.left-hand {
+    transform: translateX(-50px); /* Shift left hand slightly to the left */
+}
+
+.right-hand {
+    transform: translateX(50px); /* Shift right hand slightly to the right */
+}
+
+/* Diagonal placement of additional cards */
+.split-hand img:nth-child(2) {
+    transform: translate(-10px, -20px) rotate(-10deg);
+}
+.split-hand img:nth-child(3) {
+    transform: translate(10px, -20px) rotate(10deg);
 }

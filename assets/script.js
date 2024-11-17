@@ -1,3 +1,4 @@
+//YEA YOU FETCH THAT DOM 
 document.addEventListener("DOMContentLoaded", function () {
 
     let userWin = 0;
@@ -8,8 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let dealerHand = [];
     let deck = [];
     let gameInProgress = false; // Flag to check if the game is live
+    let splitHands = []; // Holds hands for split functionality
 
-    // INITIALIZE THE DECK
+    // INITIALIZE AND SHUFFLE THE DECK BABY
     function getDeck() {
         const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
         const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
@@ -18,6 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const value of values) {
                 deck.push({ value, suit });
             }
+        }
+        return shuffleDeck(deck); // Shuffle the deck when it's created
+    }
+
+    // SOMEONE SUGGESTED MFA PUT SOME SHUFFLE IN THE DECK
+    function shuffleDeck(deck) {
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]]; // Swap elements? decks? darts?
         }
         return deck;
     }
@@ -35,10 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         hand.forEach(card => {
             if (["J", "Q", "K"].includes(card.value)) {
-                total += 10; // Face cards are worth 10
+                total += 10; // tres tens, this trio 10/pc 
             } else if (card.value === "A") {
-                total += 11; // Aces start as 11
-                aces += 1; // Count the aces
+                total += 11; // Aces start for the 11
+                aces += 1; // your over 21 wihout it so Count the aces as 1
             } else {
                 total += card.value; // Number cards are worth their face value
             }
@@ -71,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const value = card.value.toString().toLowerCase(); // Ensure the value is lowercase 
                 const suit = card.suit.toLowerCase();
                 
-                img.src = `images/cards/${value}_of_${suit}.jpg`;
+                img.src = `images/cards/${value}_of_${suit}.jpg`; // "Yahtzel - Girls"
                 img.alt = `${card.value} of ${card.suit}`;
                 img.classList.add("card-image");
             }
@@ -86,18 +97,53 @@ document.addEventListener("DOMContentLoaded", function () {
         resultContainer.textContent = `Results: Wins: ${userWin}, Ties: ${userTie}, Losses: ${userLoss}`;
     }
 
+    // ENABLE/DISABLE BUTTONS
+    function toggleButtons(isGameInProgress) {
+        // Disable or enable buttons based on game state
+        document.getElementById("hit-button").disabled = !isGameInProgress;
+        document.getElementById("stand-button").disabled = !isGameInProgress;
+        document.getElementById("split-button").disabled = !isGameInProgress;
+        document.getElementById("new-game-button").disabled = isGameInProgress;
+    }
+
+    // SPLIT ACTION
+    function split() {
+        if (userHand.length !== 2 || userHand[0].value !== userHand[1].value) {
+            console.log("Cannot split this hand.");
+            return;
+        }
+
+        // Create two separate hands for the split
+        const hand1 = [userHand[0], getCard(deck)];
+        const hand2 = [userHand[1], getCard(deck)];
+
+        splitHands = [hand1, hand2];
+        splitInProgress = true;
+
+        // Display both hands
+        displayHand(hand1, "user-hand");
+        displayHand(hand2, "user-hand-2");
+
+        // Disable split button after using it
+        document.getElementById("split-button").disabled = true;
+        
+        // Allow hitting on both hands
+        document.getElementById("hit-button").disabled = false;
+    }
+
     // HIT ACTION
-    function hit() {
+    function hit(handIndex = 0) {
         if (!gameInProgress) return; // You need to be in the game to hit
 
+        const hand = splitHands[handIndex] || userHand;
         const newCard = getCard(deck);
         if (!newCard) return;
 
-        userHand.push(newCard);
-        displayHand(userHand, "user-hand");
+        hand.push(newCard);
+        displayHand(hand, handIndex === 0 ? "user-hand" : "user-hand-2");
 
-        const userTotal = calculateHand(userHand);
-        console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+        const userTotal = calculateHand(hand);
+        console.log(`Your hand: ${hand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
 
         if (userTotal > 21) {
             console.log("YOU BUSTED!");
@@ -106,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // HANDLE A STAND ACTION
+    // STAND ACTION
     function stand() {
         if (!gameInProgress) return; // Do nothing if no game is in progress
 
@@ -172,12 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function endGame(resultMessage) {
         gameInProgress = false; // End the game
         updateGameResults();  // Update the stats
-        displayResult(` Wins: ${userWin} | Ties: ${userTie} | Losses: ${userLoss}`); // Show "Game Over" message with stats
+        displayResult(`Wins: ${userWin} | Ties: ${userTie} | Losses: ${userLoss}`); // Show "Game Over" message with stats
 
         // Disable buttons or take any other end-game actions here
-        document.getElementById("hit-button").disabled = true;
-        document.getElementById("stand-button").disabled = true;
-        document.getElementById("new-game-button").disabled = false;
+        toggleButtons(false); // Disable game-related buttons
     }
 
     // START NEW GAME
@@ -186,38 +230,35 @@ document.addEventListener("DOMContentLoaded", function () {
         deck = getDeck();
         userHand = [getCard(deck), getCard(deck)];
         dealerHand = [getCard(deck), getCard(deck)];
+        splitHands = []; // Clear any split hands
 
         // DISPLAY CARDS + DEALER 2ND CARD FACE DOWN
         displayHand(userHand, "user-hand");
 
         // Set dealer hand with a face-down card for the second card
-        const faceDownCard = { value: "Face Down", suit: "unknown" };
-        const dealerHandWithFaceDown = [dealerHand[0], faceDownCard];
+        const faceDownCard = { value: "Face Down", suit: "" };
+        displayHand([dealerHand[0], faceDownCard], "dealer-hand");
 
-        displayHand(dealerHandWithFaceDown, "dealer-hand");
+        toggleButtons(true); // Enable the game buttons
 
-        // RESET CONSOLE LOG GAME MESSAGES
-        const resultContainer = document.getElementById("game-result");
-        resultContainer.textContent = "";
+        gameInProgress = true; // Set flag for game in progress
+        console.clear(); // Clear any previous console logs
 
-        // ENABLE BUTTONS (DISABLED)
-        document.getElementById("hit-button").disabled = false;
-        document.getElementById("stand-button").disabled = false;
-        document.getElementById("new-game-button").disabled = true;
+        // Clear result display
+        const gameResult = document.getElementById("game-result");
+        gameResult.style.visibility = "hidden";
+        gameResult.style.opacity = "0"; // Fade out result message
 
-        // SET GAME IN PROGRESS
-        gameInProgress = true;
-
-        console.log(`Your hand: ${userHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${calculateHand(userHand)})`);
-        console.log(`Dealer's hand: ${dealerHand[0].value} of ${dealerHand[0].suit}, ?`);
+        updateGameResults(); // Initialize stats
     }
 
-    // EVENT LISTENERS FOR BUTTONS
-    document.getElementById("hit-button").addEventListener("click", hit);
+    // BINDING BUTTONS
+    document.getElementById("hit-button").addEventListener("click", () => hit());
     document.getElementById("stand-button").addEventListener("click", stand);
+    document.getElementById("split-button").addEventListener("click", split);
     document.getElementById("new-game-button").addEventListener("click", startNewGame);
 
-    // START THE GAME
+    // INITIATE GAME
     startNewGame();
 
 });
