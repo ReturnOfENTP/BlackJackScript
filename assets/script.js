@@ -8,6 +8,9 @@ let deck = [];
 let gameInProgress = false; // Flag to check if the game is live
 let splitHands = []; // Holds hands for split functionality
 
+let splitInProgress = false; // Tracks whether a split is active
+let activeHandIndex = 0; // Tracks which split hand is being played (0 or 1)
+
 // INITIALIZE AND SHUFFLE THE DECK BABY
 function getDeck() {
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
@@ -130,23 +133,41 @@ function split() {
 }
 
 // HIT ACTION
-function hit(handIndex = 0) {
+function hit() {
     if (!gameInProgress) return; // You need to be in the game to hit
 
-    const hand = splitHands[handIndex] || userHand;
+    /* Which hand is Active Fam 0,1 */ 
+    const handIndex = splitInProgress && activeHandIndex < splitHands.length ?activeHandIndex : 0;
+    const hand = splitInProgress ? splitHands[handIndex] : userHand; 
+
+    /*Draw for active hand fam*/
     const newCard = getCard(deck);
     if (!newCard) return;
 
     hand.push(newCard);
-    displayHand(hand, handIndex === 0 ? "user-hand" : "user-hand-2");
+
+    //UPDATE DISPLAY OF ACTIVE HAND 
+    const handId = handIndex === 0 ? "user-hand" : "user-hand-2";
+    displayHand(hand,handId);
 
     const userTotal = calculateHand(hand);
-    console.log(`Your hand: ${hand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+    console.log(`Your hand: ${hand.map(card => `${card.value} of 
+            ${card.suit}`).join(", ")} (Total: ${userTotal})`);
 
-    if (userTotal > 21) {
-        console.log("YOU BUSTED!");
+     // Check for a bust
+     if (userTotal > 21) {
+        console.log(`Hand-${handIndex + 1} BUSTED!`);
         userLoss++;
-        endGame("YOU BUSTED!");
+
+        if (splitInProgress && handIndex === 0) {
+            // Move to the second hand if the first one busts during a split
+            console.log("Switching to Hand-2...");
+            activeHandIndex++;
+        } else {
+            // End the game for non-split games or after the second hand
+            endGame("YOU BUSTED!");
+            userLoss++;
+        }
     }
 }
 
@@ -162,7 +183,8 @@ function stand() {
     const userTotal = calculateHand(userHand);
 
     // DEALER: DRAW CARDS UNTIL HE HITS 17 OR MORE ADDED:(Casino rule - dealer hits on soft 17)
-    while (calculateHand(dealerHand) < 17 || (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))) {
+    while (calculateHand(dealerHand) < 17 || 
+    (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))) {
         const card = getCard(deck);
         if (!card) break;
         dealerHand.push(card);
@@ -178,7 +200,7 @@ function stand() {
 }
 
 // DETERMINE OUTCOME
-function checkResults(userHand, dealerHand) {
+function checkResults(userHand, dealerHand, handLabel) {
     const userTotal = calculateHand(userHand);
     const dealerTotal = calculateHand(dealerHand);
 
@@ -240,7 +262,7 @@ function startNewGame() {
     toggleButtons(true); // Enable the game buttons
 
     gameInProgress = true; // Set flag for game in progress
-    console.clear(); // Clear any previous console logs
+    
 
     // Clear result display
     const gameResult = document.getElementById("game-result");
