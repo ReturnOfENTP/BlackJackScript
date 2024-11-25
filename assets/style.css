@@ -2,11 +2,11 @@
 body {
     background-color: rgb(29, 7, 32); /* Background color */
     font-family: Arial, sans-serif; /* Font for the page */
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full screen height */
-    margin: 0;
+    height: 50vh; /* Full screen height */
+    /* flex-wrap: wrap; */
 }
 
 #game-result {
@@ -29,7 +29,7 @@ body {
     padding: 20px;
     border-radius: 270px;
     border-width: 8px;
-    border: 8px solid rgb(244, 227, 173);
+    border: 4px solid rgb(244, 227, 173);
     width: 90%;
     max-width: 900px;
     margin: 0 auto;
@@ -105,12 +105,14 @@ button:disabled {
 
 /* Dealer hand is on top */
 #dealer-hand {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 /* User hand is below */
 #user-hand {
-    margin-top: 20px;
+    display:flex;
+    flex-direction:row;
+    margin-top: 0px;
 }
 
 /* Adjust the game container wrapper in mobile mode */
@@ -139,10 +141,22 @@ button:disabled {
     }
 }
 
+.split-hand img:nth-child(2) {
+transform: translateX(10px); /* Example of moving them independently */
+    position: relative;         /* Ensure proper positioning */
+}
+
+.split-hands {
+display:flex;
+    
+}
+
 .split-hands img {
+    height: auto;
     position: relative;
     display: inline-block;
-    margin: 10px;
+    margin-left: 20px;
+    margin-right:20px;
 }
 
 .split-hand img {
@@ -152,17 +166,14 @@ button:disabled {
 
 /* Positioning the left and right hands */
 .left-hand {
-    transform: translateX(-50px); /* Shift left hand slightly to the left */
+    transform: translateX(0px); /* Shift left hand slightly to the left */
 }
 
 .right-hand {
-    transform: translateX(50px); /* Shift right hand slightly to the right */
+    transform: translateX(0px); /* Shift right hand slightly to the right */
 }
 
 /* Diagonal placement of additional cards */
 .split-hand img:nth-child(2) {
-    transform: translate(-10px, -20px) rotate(-10deg);
-}
-.split-hand img:nth-child(3) {
-    transform: translate(10px, -20px) rotate(10deg);
+    transform: translate(20px, 15px) rotate(0deg);
 }
