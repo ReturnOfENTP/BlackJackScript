@@ -1,85 +1,112 @@
 /* General Body Styles */
 body {
-    background-color: rgb(29, 7, 32); /* Background color */
-    font-family: Arial, sans-serif; /* Font for the page */
-    display: block;
+    background-color: rgb(29, 7, 32); /* Dark background color */
+    font-family: Arial, sans-serif; /* Simple, clean font */
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh; /* Full screen height */
-    /* flex-wrap: wrap; */
+    min-height: 100vh;
+    margin: 0; /* Remove default body margin */
 }
 
+/* Game Result Display */
 #game-result {
-    display: block;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    padding-top: 0px;
-    margin-bottom: 5px;
+    margin: 10px 0;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     visibility: hidden; /* Initially hidden */
-    opacity: 0;                                          /* Fully transparent initially */
-    transition: opacity 1.5s ease-in, visibility 0s;   /* Transition opacity and visibility together */
+    opacity: 0; /* Transparent by default */
+    transition: opacity 1.5s ease-in, visibility 0s ease-in;
 }
 
-/* Wrapper for the game container */
+/* Game Container Wrapper */
 #game-container-wrapper {
-    background-color: rgb(38, 97, 79); /* White background for the game container */
+    background-color: rgb(38, 97, 79); /* Green table background */
     border-radius: 270px;
-    border-width: 8px;
-    border: 4px solid rgb(244, 227, 173);
+    border: 4px solid rgb(244, 227, 173); /* Gold border */
     width: 90%;
     max-width: 900px;
-    margin: 0 auto;
+    padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
 }
 
-/* Main container for cards and results */
+/* Main Game Container */
 #game-container {
     display: flex;
-    flex-direction: column; /* Stack dealer and user hands vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    
 }
 
-/* Flexbox container for dealer and user hands */
+/* Hands Container */
 .hand-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 0; /* Margin between hands */
+    margin: 10px 0;
 }
 
-/* Style for individual card images */
+/* Individual Card Images */
 .card-image {
-    flex: 0 1 15vw;  /* Flex-grow is 0 (no grow), 1 is flex-shrink (doesn't shrink), 15vw for width */
-    height: auto;  /* Maintain aspect ratio */
-    max-width: 120px; /* Max width for cards to avoid too large */
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2);
-    margin-right: 10px; /* Padding between cards */
-    transition: transform 0.2s ease-in-out;  /* Smooth transition on hover */
+    width: 15vw; /* Width relative to viewport */
+    max-width: 120px; /* Maximum card size */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2); /* Subtle shadow */
+    margin: 0 10px; /* Spacing between cards */
+    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
 }
 
-/* Hover effect for the card */
 .card-image:hover {
-    transform: scale(1.1);  /* Slightly enlarge the card on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
-/* Style for buttons */
+/* Dealer Hand */
+#dealer-hand {
+    margin-top: 10px;
+}
+
+/* User Hand */
+#user-hand {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+/* Split Hands Styling */
+.split-hands {
+    display: flex;
+    justify-content: space-between; /* Space between split hands */
+    width: 100%;
+    position: relative;
+}
+
+.split-hand {
+    position: relative; /* Parent for positioning child cards */
+}
+
+.split-hand img {
+    position: relative;
+    margin: 0 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Optional Transform for Diagonal Overlap */
+.split-hand img:nth-child(2) {
+    transform: translate(20px, 15px) rotate(5deg); /* Stagger the second card */
+}
+
+/* Button Container */
 #button-container {
     display: flex;
     justify-content: center;
-    margin-top:15px;
+    margin-top: 15px;
 }
 
-
-
-/* Button styling */
+/* Buttons */
 button {
     font-size: 16px;
     padding: 10px 20px;
@@ -93,86 +120,34 @@ button {
 }
 
 button:hover {
-    background-color: #45a049; /* Green when hovered */
+    background-color: #45a049; /* Green on hover */
 }
 
-/* Disabled button styles */
 button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
 
-/* Dealer hand is on top */
-#dealer-hand {
-    margin-top: 5px;
-}
-
-/* User hand is below */
-#user-hand {
-    display:flex;
-    flex-direction:row;
-    margin-top: 0px;
-}
-
-/* Adjust the game container wrapper in mobile mode */
+/* Mobile Styles */
 @media (max-width: 568px) {
     #game-container-wrapper {
-        background-color: transparent; /* Make the wrapper background transparent */
-        box-shadow: none; /* Remove shadow */
-        padding: 0; /* Remove padding */
-        border-radius: 0; /* Remove rounded corners */
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
         border: none;
     }
 
-    /* Ensure cards and buttons remain functional */
     #game-container {
-        width: 100%; /* Stretch the game container to the full width */
-        margin: 0;
+        width: 100%;
     }
 
     .card-image {
-        margin: 5px; /* Maintain spacing between cards */
+        margin: 5px;
     }
 
     button {
-        width: 80%; /* Make buttons larger and easier to tap on mobile */
+        width: 80%;
         max-width: 300px;
     }
-}
-
-.split-hand img:nth-child(2) {
-transform: translateX(10px); /* Example of moving them independently */
-    position: relative;         /* Ensure proper positioning */
-}
-
-.split-hands {
-display:flex;
-    
-}
-
-.split-hands img {
-    height: auto;
-    position: relative;
-    display: inline-block;
-    margin-left: 20px;
-    margin-right:20px;
-}
-
-.split-hand img {
-    position: absolute;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Positioning the left and right hands */
-.left-hand {
-    transform: translateX(0px); /* Shift left hand slightly to the left */
-}
-
-.right-hand {
-    transform: translateX(0px); /* Shift right hand slightly to the right */
-}
-
-/* Diagonal placement of additional cards */
-.split-hand img:nth-child(2) {
-    transform: translate(20px, 15px) rotate(0deg);
 }
