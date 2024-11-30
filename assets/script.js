@@ -1,3 +1,4 @@
+
 let userWin = 0;
 let userTie = 0;
 let userLoss = 0;
@@ -8,7 +9,7 @@ let deck = [];
 let gameInProgress = false; // Flag to check if the game is live
 let splitHands = []; // Holds hands for split functionality
 
-let splitInProgress = false; // Tracks whether a split is active
+let splitInProgress = false; // Tracks if split is active
 let activeHandIndex = 0; // Tracks which split hand is being played (0 or 1)
 
 // INITIALIZE AND SHUFFLE THE DECK BABY
@@ -128,6 +129,15 @@ function split() {
     // Disable split button after using it
     document.getElementById("split-button").disabled = true;
 
+    // Calculate and log initial totals
+    const total1 = calculateHand(hand1);
+    const total2 = calculateHand(hand2);
+
+    console.log(`Split completed:`);
+    console.log(`Hand-1: ${hand1.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${total1})`);
+    console.log(`Hand-2: ${hand2.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${total2})`);
+
+
     // Allow hitting on both hands
     document.getElementById("hit-button").disabled = false;
 }
@@ -137,7 +147,7 @@ function hit() {
     if (!gameInProgress) return; // You need to be in the game to hit
 
     /* Which hand is Active Fam 0,1 */ 
-    const handIndex = splitInProgress && activeHandIndex < splitHands.length ?activeHandIndex : 0;
+    const handIndex = splitInProgress && activeHandIndex < splitHands.length ? activeHandIndex : 0;
     const hand = splitInProgress ? splitHands[handIndex] : userHand; 
 
     /*Draw for active hand fam*/
@@ -147,12 +157,13 @@ function hit() {
     hand.push(newCard);
 
     //UPDATE DISPLAY OF ACTIVE HAND 
-    const handId = handIndex === 0 ? "user-hand" : "user-hand-2";
-    displayHand(hand,handId);
+    const handId = splitInProgress ? (handIndex === 0 ? "user-hand-1" : "user-hand-2") : "user-hand";
+    displayHand(hand, handId);
 
     const userTotal = calculateHand(hand);
-    console.log(`Your hand: ${hand.map(card => `${card.value} of 
-            ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+    console.log(`Hand-${handIndex + 1}: Drew ${newCard.value} of ${newCard.suit}`);
+    console.log(`Hand-${handIndex + 1}: ${hand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+
 
      // Check for a bust
      if (userTotal > 21) {
@@ -160,9 +171,11 @@ function hit() {
         userLoss++;
 
         if (splitInProgress && handIndex === 0) {
+
             // Move to the second hand if the first one busts during a split
             console.log("Switching to Hand-2...");
             activeHandIndex++;
+
         } else {
             // End the game for non-split games or after the second hand
             endGame("YOU BUSTED!");
