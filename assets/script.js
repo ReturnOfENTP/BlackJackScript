@@ -141,45 +141,39 @@ function split() {
     // Allow hitting on both hands
     document.getElementById("hit-button").disabled = false;
 }
-
-// HIT ACTION
+//``You Don't have to be afraid or brave just Take a HIT your safe`` --
 function hit() {
-    if (!gameInProgress) return; // You need to be in the game to hit
+    if (!gameInProgress) return; // Game must be active to hit
 
-    /* Which hand is Active Fam 0,1 */ 
-    const handIndex = splitInProgress && activeHandIndex < splitHands.length ? activeHandIndex : 0;
-    const hand = splitInProgress ? splitHands[handIndex] : userHand; 
+    const handIndex = splitInProgress ? activeHandIndex : 0; // Identify the active hand
+    const hand = splitInProgress ? splitHands[handIndex] : userHand; // Determine which hand to update
 
-    /*Draw for active hand fam*/
     const newCard = getCard(deck);
     if (!newCard) return;
 
     hand.push(newCard);
 
-    //UPDATE DISPLAY OF ACTIVE HAND 
-    const handId = splitInProgress ? (handIndex === 0 ? "user-hand-1" : "user-hand-2") : "user-hand";
+    // Display the correct hand
+    const handId = splitInProgress
+        ? (handIndex === 0 ? "user-hand-1" : "user-hand-2")
+        : "user-hand";
     displayHand(hand, handId);
 
     const userTotal = calculateHand(hand);
-    console.log(`Hand-${handIndex + 1}: Drew ${newCard.value} of ${newCard.suit}`);
-    console.log(`Hand-${handIndex + 1}: ${hand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
+    console.log(`Your hand: ${hand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${userTotal})`);
 
-
-     // Check for a bust
-     if (userTotal > 21) {
+    // Check for a bust
+    if (userTotal > 21) {
         console.log(`Hand-${handIndex + 1} BUSTED!`);
         userLoss++;
 
         if (splitInProgress && handIndex === 0) {
-
             // Move to the second hand if the first one busts during a split
             console.log("Switching to Hand-2...");
             activeHandIndex++;
-
         } else {
             // End the game for non-split games or after the second hand
             endGame("YOU BUSTED!");
-            userLoss++;
         }
     }
 }
@@ -190,14 +184,23 @@ function stand() {
 
     console.log("Weak Ass, You stand.");
 
-    // SHOW THAT SECOND DEALER CARD
+    // If splitting, check if there's another hand to play
+    if (splitInProgress && activeHandIndex === 0) {
+        console.log("Switching to Hand-2...");
+        activeHandIndex++; // Move to the second hand
+        return; // Allow the user to play the second hand
+    }
+
+    // Otherwise --> SHOW THAT SECOND DEALER CARD  ``the only risk...go go go go insane``
     displayHand(dealerHand, "dealer-hand"); // Show both dealer cards
 
     const userTotal = calculateHand(userHand);
 
     // DEALER: DRAW CARDS UNTIL HE HITS 17 OR MORE ADDED:(Casino rule - dealer hits on soft 17)
     while (calculateHand(dealerHand) < 17 || 
-    (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))) {
+    (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))
+) {
+    /*``the only risk is that you go insane`` -- */
         const card = getCard(deck);
         if (!card) break;
         dealerHand.push(card);
@@ -208,11 +211,20 @@ function stand() {
     console.log(`Dealer's hand: ${dealerHand.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${dealerTotal})`);
 
     // Check results after the dealer is done
-    checkResults(userHand, dealerHand);
+    if (splitInProgress) {
+        splitHands.forEach((hand, index) => {
+            console.log(`Checking results for Hand-${index + 1}...`);
+            checkResults(hand, dealerHand, `Hand-${index + 1}`);
+        });
+    } else {
+        //``The Game we play these days - but you know your safe`` -- //
+        checkResults(userHand, dealerHand, "Your Hand");
+    }
+    //``atleast your safe but the risk playing it safe?`` -- //
     endGame("Game Over!");
 }
 
-// DETERMINE OUTCOME
+// DETERMINE OUTCOME 
 function checkResults(userHand, dealerHand, handLabel) {
     const userTotal = calculateHand(userHand);
     const dealerTotal = calculateHand(dealerHand);
@@ -233,7 +245,7 @@ function checkResults(userHand, dealerHand, handLabel) {
         console.log("IT'S A TIE!");
         userTie++;
     }
-
+    //``going insane``
     updateGameResults();
 }
 
