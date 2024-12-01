@@ -172,8 +172,11 @@ function hit() {
             console.log("Switching to Hand-2...");
             activeHandIndex++;
         } else {
-            // End the game for non-split games or after the second hand
-            endGame("YOU BUSTED!");
+            //The Only Risk is -->
+            if (splitInProgress) {
+                console.log("Both split hands completed.");
+            }
+            endGame("You busted!");
         }
     }
 }
@@ -182,10 +185,10 @@ function hit() {
 function stand() {
     if (!gameInProgress) return; // Do nothing if no game is in progress
 
-    console.log("Weak Ass, You stand.");
+    console.log(`Hand-${activeHandIndex + 1} stands.`);
 
     // If splitting, check if there's another hand to play
-    if (splitInProgress && activeHandIndex === 0) {
+    if (splitInProgress && activeHandIndex < splitHands.length - 1) {
         console.log("Switching to Hand-2...");
         activeHandIndex++; // Move to the second hand
         return; // Allow the user to play the second hand
@@ -194,10 +197,10 @@ function stand() {
     // Otherwise --> SHOW THAT SECOND DEALER CARD  ``the only risk...go go go go insane``
     displayHand(dealerHand, "dealer-hand"); // Show both dealer cards
 
-    const userTotal = calculateHand(userHand);
 
     // DEALER: DRAW CARDS UNTIL HE HITS 17 OR MORE ADDED:(Casino rule - dealer hits on soft 17)
-    while (calculateHand(dealerHand) < 17 || 
+    while (
+        calculateHand(dealerHand) < 17 || 
     (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))
 ) {
     /*``the only risk is that you go insane`` -- */
@@ -230,19 +233,19 @@ function checkResults(userHand, dealerHand, handLabel) {
     const dealerTotal = calculateHand(dealerHand);
 
     if (userTotal > 21) {
-        console.log("YOU BUSTED!");
+        console.log(`${handLabel} YOU BUSTED! DEALER WINS`);
         userLoss++;
     } else if (dealerTotal > 21) {
-        console.log("DEALER BUSTED! YOU WIN!");
+        console.log(`${handLabel} WINS! DEALER BUST.`);
         userWin++;
     } else if (userTotal > dealerTotal) {
-        console.log("YOU WIN!");
+        console.log(`${handLabel} YOU WIN!`);
         userWin++;
     } else if (userTotal < dealerTotal) {
-        console.log("DEALER WINS!");
+        console.log(`${handLabel} LOSES!`);
         userLoss++;
     } else {
-        console.log("IT'S A TIE!");
+        console.log(`${handLabel} TIES WITH DEALER!`);
         userTie++;
     }
     //``going insane``
