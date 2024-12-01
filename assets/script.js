@@ -124,7 +124,6 @@ function split() {
     }
     //`Another Day` === `Another Wager`
     playerBalance -= wager; 
-    updateStats();//------------!
     console.log(`Split wager placed, Remaining Balance: $${playerBalance}`)
 
     // Create two separate hands for the split
@@ -304,7 +303,6 @@ function setWager(amount) {
     wager = amount;
     playerBalance -= wager; // Money === no owners, only Spenders
     console.log(`Wager set to $${wager}. Remaining balance: $${playerBalance}`);
-    
     return true;
 }
 
