@@ -265,6 +265,9 @@ function endGame(resultMessage) {
     updateGameResults();  // Update the stats
     displayResult(`Wins: ${userWin} | Ties: ${userTie} | Losses: ${userLoss}`); // Show "Game Over" message with stats
 
+    splitInProgress = false;  // Ensure no split state is carried over
+      
+
     // Disable buttons or take any other end-game actions here
     toggleButtons(false); // Disable game-related buttons
 }
@@ -276,13 +279,22 @@ function startNewGame() {
     userHand = [getCard(deck), getCard(deck)];
     dealerHand = [getCard(deck), getCard(deck)];
     splitHands = []; // Clear any split hands
-
+    
+     // "Neo, Welcome From the Matrix Back"
+     // Clear any previous split hand displays if any
+    document.getElementById("user-hand-1").innerHTML = "";
+    document.getElementById("user-hand-2").innerHTML = "";
+ 
     // DISPLAY CARDS + DEALER 2ND CARD FACE DOWN
     displayHand(userHand, "user-hand");
 
     // Set dealer hand with a face-down card for the second card
     const faceDownCard = { value: "Face Down", suit: "" };
     displayHand([dealerHand[0], faceDownCard], "dealer-hand");
+
+    // RESET SPLIT
+    splitInProgress = false; // Reset split progress state
+    activeHandIndex = 0;     // Reset the active hand index
 
     toggleButtons(true); // Enable the game buttons
 
