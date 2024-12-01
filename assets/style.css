@@ -14,7 +14,7 @@ body {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 3px 0;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     visibility: hidden; /* Initially hidden */
@@ -27,7 +27,7 @@ body {
     background-color: rgb(38, 97, 79); /* Green table background */
     border-radius: 270px;
     border: 4px solid rgb(244, 227, 173); /* Gold border */
-    width: 90%;
+    width: 100%;
     max-width: 900px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -52,7 +52,7 @@ body {
 /* Individual Card Images */
 .card-image {
     width: 15vw; /* Width relative to viewport */
-    max-width: 120px; /* Maximum card size */
+    max-width: 90px; /* Maximum card size */
     height: auto; /* Maintain aspect ratio */
     border-radius: 5px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(239, 65, 65, 0.2); /* Subtle shadow */
@@ -66,7 +66,7 @@ body {
 
 /* Dealer Hand */
 #dealer-hand {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* User Hand */
@@ -79,7 +79,7 @@ body {
 /* Split Hands Styling */
 .split-hands {
     display: flex;
-    justify-content: space-between; /* Space between split hands */
+    justify-content: center; /* Space between split hands */
     width: 100%;
     position: relative;
 }
@@ -95,15 +95,27 @@ body {
 }
 
 /* Optional Transform for Diagonal Overlap */
-.split-hand img:nth-child(2) {
-    transform: translate(20px, 15px) rotate(5deg); /* Stagger the second card */
+.split-hand img:nth-child(1) {
+    
+    transform: translate(20px, 15px) rotate(0deg); /* Stagger the second card */
 }
+
+/* Optional Transform for Diagonal Overlap */
+.split-hand img:nth-child(2) {
+    transform: translate(-60px, 8px) rotate(4deg); /* Stagger the second card */
+}
+
+/* Optional Transform for Diagonal Overlap */
+.split-hand img:nth-child(3) {
+    transform: translate(-150px, 4px) rotate(8deg); /* Stagger the second card */
+}
+
 
 /* Button Container */
 #button-container {
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 /* Buttons */
