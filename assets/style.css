@@ -1,12 +1,38 @@
 /* General Body Styles */
+.inline-header li{
+    color: #0000;
+    padding: 10px;
+    margin: 0px;
+    list-style: none;
+    display: inline;
+}
 body {
-    background-color: rgb(29, 7, 32); /* Dark background color */
+    background-color: rgb(9 36 80); /* Dark background color */
     font-family: Arial, sans-serif; /* Simple, clean font */
-    display: flex;
+    display: flex-wrap;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0; /* Remove default body margin */
+}
+
+a { 
+    color: rgb(60 60 63); 
+    text-decoration: none;
+}
+
+nav {
+    text-align: right;
+}
+
+#absolute-nav-section {
+    position: static;
+    padding: 5px;
+    background-color:rgb(9 36 80);
+    border-width: 3px;       /* Set the border width */
+    border-style: solid;     /* Set the border style (solid, dashed, dotted, etc.) */
+    border-color:rgb(8 31 68);
+    right: 100px
 }
 
 /* Game Result Display */
@@ -24,13 +50,15 @@ body {
 
 /* Game Container Wrapper */
 #game-container-wrapper {
-    background-color: rgb(38, 97, 79); /* Green table background */
+    background-color: rgb(9 36 80); /* Green table background */
     border-radius: 270px;
-    border: 4px solid rgb(244, 227, 173); /* Gold border */
+    border: 4px solid rgb(12 33 67); /* Gold border */
     width: 100%;
-    max-width: 900px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin-top:200px;
+    margin-left:27px;
+    padding: 4px;
+   
 }
 
 /* Main Game Container */
@@ -46,7 +74,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 0;
+    
 }
 
 /* Individual Card Images */
@@ -66,14 +94,14 @@ body {
 
 /* Dealer Hand */
 #dealer-hand {
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 /* User Hand */
 #user-hand {
     display: flex;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 /* Split Hands Styling */
@@ -90,24 +118,28 @@ body {
 
 .split-hand img {
     position: relative;
-    margin: 0 10px;
+    margin: 0 3px;
     transition: transform 0.3s ease-in-out;
 }
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(1) {
-    
-    transform: translate(20px, 15px) rotate(0deg); /* Stagger the second card */
+    disaply:flex;
+    flex-direction:row;
+    transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(2) {
-    transform: translate(-60px, 8px) rotate(4deg); /* Stagger the second card */
+    disaply:flex;
+    flex-direction:row;
+    transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(3) {
-    transform: translate(-150px, 4px) rotate(8deg); /* Stagger the second card */
+    disaply:flex;
+    transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 
 
@@ -141,14 +173,19 @@ button:disabled {
 }
 
 /* Mobile Styles */
-@media (max-width: 568px) {
+@media (max-width: 501px) {
     #game-container-wrapper {
         background-color: transparent;
         box-shadow: none;
         padding: 0;
         border-radius: 0;
         border: none;
+        margin-left:0;
     }
+
+    .card-image {
+    width: 20vw; /* Width relative to viewport */
+    max-width: 200%; /* Maximum card size */
 
     #game-container {
         width: 100%;
