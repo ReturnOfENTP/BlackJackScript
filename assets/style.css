@@ -16,14 +16,27 @@ body {
     margin: 0; /* Remove default body margin */
 }
 
+ #wager-container {
+       display:flex;
+        
+}
+
+
 a { 
-    color: rgb(60 60 63); 
+    color: #1f82ed;; 
     text-decoration: none;
 }
 
 nav {
     text-align: right;
 }
+
+#player-stats {
+    display:flex;
+    margin: 25px;
+    color: #1f82ed;
+}
+
 
 #absolute-nav-section {
     position: static;
@@ -52,7 +65,7 @@ nav {
 #game-container-wrapper {
     background-color: rgb(9 36 80); /* Green table background */
     border-radius: 270px;
-    border: 4px solid rgb(12 33 67); /* Gold border */
+    border: 4px solid #1f82ed;; /* Gold border */
     width: 100%;
     max-width: 800px;
     margin-top:200px;
@@ -102,6 +115,14 @@ nav {
     display: flex;
     flex-direction: row;
     margin-top: 0px;
+}
+
+#wager-container {
+margin-top: 12px;
+display:flex;
+flex-direction:row;
+justify-content:center;
+ max-width: 800px;
 }
 
 /* Split Hands Styling */
@@ -182,6 +203,11 @@ button:disabled {
         border: none;
         margin-left:0;
     }
+
+    #wager-container {
+       display:flex;
+        
+}
 
     .card-image {
     width: 20vw; /* Width relative to viewport */

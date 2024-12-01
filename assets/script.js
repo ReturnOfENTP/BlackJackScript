@@ -12,6 +12,10 @@ let splitHands = []; // Holds hands for split functionality
 let splitInProgress = false; // Tracks if split is active
 let activeHandIndex = 0; // Tracks which split hand is being played (0 or 1)
 
+let playerBalance = 1000; // `justHowDeep`
+let wager = 0; // `doesTheRabbitHoleGo`
+
+
 // INITIALIZE AND SHUFFLE THE DECK BABY
 function getDeck() {
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
@@ -105,6 +109,7 @@ function toggleButtons(isGameInProgress) {
     document.getElementById("stand-button").disabled = !isGameInProgress;
     document.getElementById("split-button").disabled = !isGameInProgress;
     document.getElementById("new-game-button").disabled = isGameInProgress;
+    
 }
 
 // SPLIT ACTION
@@ -113,6 +118,14 @@ function split() {
         console.log("Cannot split this hand.");
         return;
     }
+    if (playerBalance < wager) {
+        console.log("Not enough coin to split my boy");
+        return;
+    }
+    //`Another Day` === `Another Wager`
+    playerBalance -= wager; 
+    updateStats();//------------!
+    console.log(`Split wager placed, Remaining Balance: $${playerBalance}`)
 
     // Create two separate hands for the split
     const hand1 = [userHand[0], getCard(deck)];
@@ -137,10 +150,10 @@ function split() {
     console.log(`Hand-1: ${hand1.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${total1})`);
     console.log(`Hand-2: ${hand2.map(card => `${card.value} of ${card.suit}`).join(", ")} (Total: ${total2})`);
 
-
     // Allow hitting on both hands
     document.getElementById("hit-button").disabled = false;
 }
+
 //``You Don't have to be afraid or brave just Take a HIT your safe`` --
 function hit() {
     if (!gameInProgress) return; // Game must be active to hit
@@ -260,6 +273,13 @@ function displayResult(resultMessage) {
     // Show the result container with transition
     gameResult.style.visibility = "visible";  // Make it visible
     gameResult.style.opacity = "1";           // Fade it in
+
+    //DISPLAY UPDATED STATS 
+    function updateStats() {
+        const statsContainer = document.getElementById("player-stats");
+        statsContainer.textContent = `Balance: $${playerBalance} | Current Wager: $${wager}`;
+    }
+
 }
 
 // END GAME
@@ -275,15 +295,34 @@ function endGame(resultMessage) {
     toggleButtons(false); // Disable game-related buttons
 }
 
+// SET WAGER ------- THE ONLY RISK...
+function setWager(amount) {
+    if (amount <= 0 || amount > playerBalance) {
+        console.log("Invalid wager amount.");
+        return false;
+    }
+    wager = amount;
+    playerBalance -= wager; // Money === no owners, only Spenders
+    console.log(`Wager set to $${wager}. Remaining balance: $${playerBalance}`);
+    
+    return true;
+}
+
 // START NEW GAME
 function startNewGame() {
     // Reset hands and deck
+    const wagerInput = document.getElementById("wager-input").value;
+    if (!setWager(Number(wagerInput))) {
+        alert("Fuck you do that for Slim? Now were Short the 9");
+        return;
+    }
+
     deck = getDeck();
     userHand = [getCard(deck), getCard(deck)];
     dealerHand = [getCard(deck), getCard(deck)];
     splitHands = []; // Clear any split hands
     
-     // "Neo, Welcome From the Matrix Back"
+     // "Welcome Back Neo"
      // Clear any previous split hand displays if any
     document.getElementById("user-hand-1").innerHTML = "";
     document.getElementById("user-hand-2").innerHTML = "";
@@ -308,6 +347,8 @@ function startNewGame() {
     const gameResult = document.getElementById("game-result");
     gameResult.style.visibility = "hidden";
     gameResult.style.opacity = "0"; // Fade out result message
+
+    
 
     updateGameResults(); // Initialize stats
 }
