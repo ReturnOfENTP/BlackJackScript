@@ -14,6 +14,8 @@ let activeHandIndex = 0; // Tracks which split hand is being played (0 or 1)
 
 let playerBalance = 1000; // `justHowDeep`
 let wager = 0; // `doesTheRabbitHoleGo`
+let accumulatedWager = 0; // This will hold the current accumulated wager
+
 
 
 // INITIALIZE AND SHUFFLE THE DECK BABY
@@ -108,7 +110,7 @@ function toggleButtons(isGameInProgress) {
     document.getElementById("hit-button").disabled = !isGameInProgress;
     document.getElementById("stand-button").disabled = !isGameInProgress;
     document.getElementById("split-button").disabled = !isGameInProgress;
-    document.getElementById("new-game-button").disabled = isGameInProgress;
+    document.getElementById("play-button").disabled = isGameInProgress;
     
 }
 
@@ -212,7 +214,7 @@ function stand() {
 
     // DEALER: DRAW CARDS UNTIL HE HITS 17 OR MORE ADDED:(Casino rule - dealer hits on soft 17)
     while (
-        calculateHand(dealerHand) < 17 || 
+    calculateHand(dealerHand) < 17 || 
     (calculateHand(dealerHand) === 17 && dealerHand.some(card => card.value === "A"))
 ) {
     /*``the only risk is that you go insane`` -- */
@@ -273,12 +275,6 @@ function displayResult(resultMessage) {
     gameResult.style.visibility = "visible";  // Make it visible
     gameResult.style.opacity = "1";           // Fade it in
 
-    //DISPLAY UPDATED STATS 
-    function updateStats() {
-        const statsContainer = document.getElementById("player-stats");
-        statsContainer.textContent = `Balance: $${playerBalance} | Current Wager: $${wager}`;
-    }
-
 }
 
 // END GAME
@@ -292,28 +288,50 @@ function endGame(resultMessage) {
 
     // Disable buttons or take any other end-game actions here
     toggleButtons(false); // Disable game-related buttons
+
+    document.getElementById("play-button").disabled = false;
+
 }
 
 // SET WAGER ------- THE ONLY RISK...
 function setWager(amount) {
-    if (amount <= 0 || amount > playerBalance) {
+    if (amount <= 0 || amount + accumulatedWager > playerBalance) {
         console.log("Invalid wager amount.");
         return false;
     }
-    wager = amount;
-    playerBalance -= wager; // Money === no owners, only Spenders
-    console.log(`Wager set to $${wager}. Remaining balance: $${playerBalance}`);
+    accumulatedWager += amount; // Add the wager to the accumulated wager
+    console.log(`Wager accumulated to $${accumulatedWager}. Remaining balance: $${playerBalance - accumulatedWager}`);
+    updateStats(); // Update stats after every wager
     return true;
+
+}
+
+//DISPLAY UPDATED STATS 
+function updateStats() {
+    const statsContainer = document.getElementById("player-stats");
+    statsContainer.textContent = `Balance: $${playerBalance - accumulatedWager} | Current Wager: $${accumulatedWager}`;
 }
 
 // START NEW GAME
 function startNewGame() {
     // Reset hands and deck
     const wagerInput = document.getElementById("wager-input").value;
+
     if (!setWager(Number(wagerInput))) {
-        alert("Fuck you do that for Slim? Now were Short the 9");
+        console.log("Place A Wager to Start");
         return;
     }
+
+    if (accumulatedWager <= 0) {
+        console.log("Place a wager to start the game.");
+        return;
+    }
+
+    playerBalance -= accumulatedWager; // Deduct the accumulated wager from the player's balance
+    wager = accumulatedWager; // Set the wager to the accumulated wager
+    accumulatedWager = 0; // Reset the accumulated wager after starting the game
+
+    console.log(`Wager set to $${wager}. Remaining balance: $${playerBalance}`);
 
     deck = getDeck();
     userHand = [getCard(deck), getCard(deck)];
@@ -337,16 +355,12 @@ function startNewGame() {
     activeHandIndex = 0;     // Reset the active hand index
 
     toggleButtons(true); // Enable the game buttons
-
     gameInProgress = true; // Set flag for game in progress
     
-
     // Clear result display
     const gameResult = document.getElementById("game-result");
     gameResult.style.visibility = "hidden";
     gameResult.style.opacity = "0"; // Fade out result message
-
-    
 
     updateGameResults(); // Initialize stats
 }
@@ -355,12 +369,46 @@ function startNewGame() {
 document.getElementById("hit-button").addEventListener("click", () => hit());
 document.getElementById("stand-button").addEventListener("click", stand);
 document.getElementById("split-button").addEventListener("click", split);
-document.getElementById("new-game-button").addEventListener("click", startNewGame);
+document.getElementById("play-button").addEventListener("click", function () {
+    if (accumulatedWager <= 0) {
+        console.log("Please place a wager to start the game.");
+        return; // Prevent game start if no wager is placed
+    }
+    startNewGame(); // Start the game after valid wager is placed
+});
+
+//BET TO LIVE BET TO FEEL
+document.getElementById("bet-game-button").addEventListener("click", function () {
+    const wagerInput = document.getElementById("wager-input"); // Get the input field
+    const wagerAmount = Number(wagerInput.value); // Get the wager amount from the input
+
+    if (wagerAmount > 0 && wagerAmount <= playerBalance) {
+        if (setWager(wagerAmount)) {
+            wagerInput.value = ""; // Clear input after placing the bet
+            isBetPlaced = true;
+            togglePlayButton(true); // Enable the "Play" button after a bet is placed
+        }
+    } else {
+        alert("Invalid wager amount. Please enter a valid number.");
+    }
+});
+
+
+// Enable/Disable the "Play" button based on whether a bet is placed
+function togglePlayButton(enable) {
+    document.getElementById("play-button").disabled = !enable;
+}
 
 //YEA YOU FETCH THAT DOM 
 document.addEventListener("DOMContentLoaded", function () {
+    // Set up the game interface without starting the game
+    toggleButtons(false); // Disable game buttons
+    updateGameResults(); // Initialize scoreboard
+    document.getElementById("game-result").style.visibility = "hidden";
+
 
     // INITIATE GAME
     startNewGame();
+    
 
 });

@@ -193,6 +193,21 @@ button:disabled {
     cursor: not-allowed;
 }
 
+#wager-input {
+    font-size: 16px;
+    max-width: 110px;
+    text-align:center;
+    color: #0b0b0b;
+    padding: 10px 0px;
+    margin-right:5px;
+    margin:10px;
+    background-color: #ffffff; /* Blue button */
+    border: none;
+    border-radius: 50px;
+    cursor:text;
+    
+}}
+
 /* Mobile Styles */
 @media (max-width: 501px) {
     #game-container-wrapper {
