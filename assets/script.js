@@ -246,15 +246,22 @@ function checkResults(userHand, dealerHand, handLabel) {
     const userTotal = calculateHand(userHand);
     const dealerTotal = calculateHand(dealerHand);
 
+    let payout = 0;
+
+        // Check if the user has Blackjack (first two cards totaling 21)
+        const isBlackjack = userHand.length === 2 && userTotal === 21;
+
     if (userTotal > 21) {
         console.log(`${handLabel} YOU BUSTED! DEALER WINS`);
         userLoss++;
     } else if (dealerTotal > 21) {
         console.log(`${handLabel} WINS! DEALER BUST.`);
         userWin++;
+        payout = 2; /* 2X PAYOUT FOR REGO WIN*/
     } else if (userTotal > dealerTotal) {
         console.log(`${handLabel} YOU WIN!`);
         userWin++;
+        payout = 2; /*2X PAYOUT FOR REGO WIN*/
     } else if (userTotal < dealerTotal) {
         console.log(`${handLabel} LOSES!`);
         userLoss++;
@@ -262,6 +269,19 @@ function checkResults(userHand, dealerHand, handLabel) {
         console.log(`${handLabel} TIES WITH DEALER!`);
         userTie++;
     }
+
+    if (isBlackjack) {
+        console.log(`${handLabel} BLACKJACK BITCH! YOU WIN 3:2`);
+        userWin++;
+        payout = 3 / 2; //3:2 PAYOUT FOR A BLACKJACK
+    }
+
+    if (payout > 0) {
+        const winAmount = wager * payout;
+        playerBalance += winAmount;
+        console.log(`${handLabel} Payout: $${winAmount}. Updated Balance: $${playerBalance}`);
+    }
+
     //``going insane``
     updateGameResults();
 }
@@ -284,13 +304,16 @@ function endGame(resultMessage) {
     displayResult(`Wins: ${userWin} | Ties: ${userTie} | Losses: ${userLoss}`); // Show "Game Over" message with stats
 
     splitInProgress = false;  // Ensure no split state is carried over
-      
+    accumulatedWager = 0; //RESET WAGER AFTER GAME ENDS
 
     // Disable buttons or take any other end-game actions here
     toggleButtons(false); // Disable game-related buttons
 
     document.getElementById("play-button").disabled = false;
     validWager = false; // RESET VALID WAGER
+
+    //Reset Wager After a Game 
+    console.log(`Game OVer my Dude! $${playerBalance}`);
 }
 
 // SET WAGER ------- THE ONLY RISK...
