@@ -433,3 +433,48 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
 });
+
+// Open Modal
+function openModal() {
+    document.getElementById('login-modal').style.display = 'flex';
+  }
+  
+  // Get the modal elements
+const modal = document.getElementById("login-modal");
+const closeButton = document.querySelector(".close-button");
+const loginButton = document.getElementById("login-button");
+
+// Show the modal
+function openModal() {
+  modal.classList.add("show");
+}
+
+// Close the modal
+function closeModal() {
+  modal.classList.remove("show");
+}
+
+// Open the modal when the "Login" button is clicked
+loginButton.addEventListener("click", openModal);
+
+// Close the modal when the close button (X) is clicked
+closeButton.addEventListener("click", closeModal);
+
+// Optionally, close the modal when clicking outside the modal content
+window.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+
+const slideToggle = document.getElementById("slide-toggle");
+const slidingMain = document.getElementById("sliding-main-container");
+
+slideToggle.addEventListener("click", () => {
+    slidingMain.classList.toggle("open");
+
+
+
+
+});

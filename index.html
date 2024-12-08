@@ -8,22 +8,53 @@
     <title>Document</title>
 </head>
 
-
-
 <body>
     
     <header>
         <nav id="absolute-nav-section">
-
-            <ul class="inline-header">
-                <li><a href="">Play Now</a></li>
-                <li><a href="">About ENTP</a></li>
-                <li><a href="">Terms of Service</a></li>
-            </ul>
+            <!-- Modal Trigger Button -->
+            <button id="login-button">Login</button>
+    
+            <!-- Modal Structure -->
+            <div id="login-modal" class="modal">
+                <div class="modal-content">
+                    <button class="close-button">&times;</button>
+                    <div class="modal-header">
+                    
+                        <button class="tab-button" id="signup-tab">Sign Up</button>
+                    </div>
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label>
+                                <i class="fas fa-user"></i>
+                                <input type="text" placeholder="Enter Username or Email" required>
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <i class="fas fa-eye-slash"></i>
+                                <input type="password" placeholder="Enter Password" required>
+                            </label>
+                        </div>
+                        <button type="submit" class="primary-button">Sign In</button>
+                        <p class="forgot-password">Forgot password? <a href="#">Reset Here</a></p>
+                    </form>
+                    <div class="modal-footer">
+                        <img src="your-image.png" alt="Footer Icon" class="footer-image">
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
 
-    
+    <div id="sliding-main-container">
+        <h2>Sliding Panel</h2>
+        <p>This is the content of the sliding panel.</p>
+    </div>
+    <button id="slide-toggle">
+        <img src="./assets/images/icon.svg" alt="Toggle" />
+    </button>
+
 
     <div id="game-container-wrapper">
         <div id="game-container">
@@ -45,7 +76,7 @@
         </div>
         
         <div id="button-container">
-            <!-- Add your buttons here -->
+            
             
             
         </div>
