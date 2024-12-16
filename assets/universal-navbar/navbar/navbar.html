@@ -4,75 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Signup Modal with Sliding Panel</title>
+
    
 </head>
 <body>
     
-        <nav id="absolute-nav-section">
-            <button id="login-button">Login</button>
-        
-            <!-- Modal Structure -->
-            <div id="login-modal" class="modal">
-                <div class="modal-content">
-                    <button class="close-button">&times;</button>
-                    <div class="modal-header">
-                        <button class="tab-button active" id="login-tab">Log In</button>
-                        <button class="tab-button" id="signup-tab">Sign Up</button>
-                    </div>
-            
-                    <!-- Login Form -->
-                    <form id="login-form" class="form active">
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-user"></i>
-                                <input type="text" placeholder="Enter Username or Email" required>
-                            </label>
-                        </div>
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-eye-slash"></i>
-                                <input type="password" placeholder="Enter Password" required>
-                            </label>
-                        </div>
-                        <button type="submit" class="primary-button">Sign In</button>
-                        <p class="forgot-password">Forgot password? <a href="#">Reset Here</a></p>
-                    </form>
-            
-                    <!-- Sign-Up Form -->
-                    <form id="signup-form" class="form">
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" id="email" placeholder="Enter Email" required>
-                            </label>
-                        </div>
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-user"></i>
-                                <input type="text" id="username" placeholder="Enter Username" required>
-                                <small class="error-message">Username must be 4-12 characters and contain only letters or numbers.</small>
-                            </label>
-                        </div>
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-eye"></i>
-                                <input type="password" id="password" placeholder="Enter Password" required>
-                            </label>
-                        </div>
-                        <div class="input-group">
-                            <label>
-                                <i class="fas fa-eye"></i>
-                                <input type="password" id="confirm-password" placeholder="Re-enter Password" required>
-                            </label>
-                        </div>
-                        <button type="submit" class="primary-button">Sign Up</button>
-                    </form>
-            
-                </div>
-            </div>
-        </nav>        
+    <nav id="absolute-nav-section">
 
-    <!-- Sliding Panel Content -->
+        <button id="login-button">Login</button>
+
+        
+    
+        <!-- Modal Structure -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <button class="close-button">&times;</button>
+                <div class="modal-header">
+                    <button class="tab-button active" id="login-tab">Log In</button>
+                    <button class="tab-button" id="signup-tab">Sign Up</button>
+                </div>
+    
+
+
+                <!-- Login Form -->
+                <form id="login-form" class="form active">
+                    <div class="input-group">
+                        <label>
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="usernameOrEmail" placeholder="Enter Username or Email" required>
+                        </label>
+                    </div>
+                    <div class="input-group">
+                        <label>
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password" placeholder="Enter Password" required>
+                        </label>
+                    </div>
+                    <button type="submit" class="primary-button">Login</button>
+                </form>
+
+    
+
+
+
+
+                <form id="signup-form" class="form">
+    <div class="input-group">
+        <label>
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="email" id="email" placeholder="Enter Email" required>
+        </label>
+    </div>
+    <div class="input-group">
+        <label>
+            <i class="fas fa-user"></i>
+            <input type="text" name="username" id="username" placeholder="Enter Username" required>
+            <small class="error-message">Username must be 4-12 characters and contain only letters or numbers.</small>
+        </label>
+    </div>
+    <div class="input-group">
+        <label>
+            <i class="fas fa-eye"></i>
+            <input type="password" name="password" id="password" placeholder="Enter Password" required>
+        </label>
+    </div>
+    <div class="input-group">
+        <label>
+            <i class="fas fa-eye"></i>
+            <input type="password" name="confirmPassword" id="confirm-password" placeholder="Re-enter Password" required>
+        </label>
+    </div>
+    <button type="submit" class="primary-button">Sign Up</button>
+</form>
+
+            </div>
+        </div>
+        <div id="user-info" class="hidden">
+            <span id="username-box"></span>
+            
+            <div id="dropdown-menu" class="dropdown hidden">
+                <ul>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/transactions">Transactions</a></li>
+                    <li><a href="/sports-bets">Sports Bets</a></li>
+                    <li><a href="/referrals">Referrals</a></li>
+                    <li><a href="/bonus-code">Bonus Code</a></li>
+                    <li><a href="/exchange">Exchange</a></li>
+                    <li><a href="/transfer">Transfer</a></li>
+                    <li><a href="/tickets">Tickets</a></li>
+                    <li><a href="/support">Support</a></li>
+                    <li><a href="/raffle">Raffle</a></li>
+                    <li><a href="/weekly-race">Weekly Race</a></li>
+                    <li><a href="/calendar">Calendar</a></li>
+                    <li><a href="/custom-sports">Custom Sports</a></li>
+                    <li><a href="/sign-out" id="sign-out">Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+    
+
     <div id="sliding-main-container">
         <h2>Sliding Panel</h2>
         <p>This is the content of the sliding panel.</p>
@@ -81,7 +113,6 @@
         <img src="./assets/images/icon.svg" alt="Toggle" />
     </button>
 
-    <!-- Link to JavaScript -->
-    <script src="navbar.js"></script>
+    <!-- JavaScript Files should be at the bottom -->
+    <script src="assets/universal-navbar/scripts/main.js"></script>
 </body>
-</html>

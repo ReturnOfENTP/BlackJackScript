@@ -31,6 +31,8 @@ h2 {
     overflow-y: auto;
 }
 
+
+
 .modal-content {
     min-height: 380px;
 }
@@ -244,3 +246,48 @@ button.close-button:hover {
         right: 10px;
     }
 }
+
+/* Add transition for fading out the modal */
+#login-modal {
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Dropdown menu styles */
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#dropdown-menu ul li {
+    padding: 10px;
+}
+
+#dropdown-menu ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Username box styling */
+#username-box {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+

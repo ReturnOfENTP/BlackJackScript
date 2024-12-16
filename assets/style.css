@@ -135,21 +135,21 @@ justify-content:center;
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(1) {
-    disaply:flex;
+    display:flex;
     flex-direction:row;
     transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(2) {
-    disaply:flex;
+    display:flex;
     flex-direction:row;
     transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 
 /* Optional Transform for Diagonal Overlap */
 .split-hand img:nth-child(3) {
-    disaply:flex;
+    display:flex;
     transform: translate(0px, 0px) rotate(0deg); /* Stagger the second card */
 }
 

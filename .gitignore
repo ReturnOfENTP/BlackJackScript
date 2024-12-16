@@ -1,1 +1,29 @@
+# Node modules
+/node_modules/
+
+# Logs
+*.log
+
+# OS specific files
 .DS_Store
+Thumbs.db
+
+# Ignore all build and output files
+/dist/
+/build/
+
+# Ignore all files in assets/images/cards
+/assets/images/cards/*
+
+# Ignore all scripts and styles that might be compiled or minified
+/assets/universal-navbar/scripts/*.min.js
+/assets/universal-navbar/styles/*.min.css
+
+# Ignore environment files
+.env
+
+# Ignore package-lock.json if you want to exclude it (optional)
+package-lock.json 
+
+# Ignore the main.js file if you don't want to track it yet (optional)
+assets/universal-nav-bar/navbar/scripts/main.js
