@@ -9,11 +9,13 @@ body {
     margin: 0; /* Remove default body margin */
 }
 
+
+/*
 #login-button {
 
 }
 
-/* Modal Header */
+ Modal Header */
 h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -218,11 +220,34 @@ nav {
     display:flex;
     flex-direction: row-reverse;
     padding: 5px;
+    height: 48px;
     padding-right:100px;
     background-color:rgb(9 36 80);
     border-width: 3px;       /* Set the border width */
     border-style: solid;     /* Set the border style (solid, dashed, dotted, etc.) */
     border-color:rgb(8 31 68);
+}
+
+#dropdown-menu { 
+left: 0; /* Align to the left edge of #username-box */
+    width: 100%; /* Match the width of #username-box */
+}
+
+#dropdown-menu ul {
+    background-color:rgb(113 137 176);
+     list-style-type: none;
+        
+    
+}
+
+#dropdown-menu ul li {
+    padding: 2px; /* Add padding to create the rectangular block area */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+    
+}
+
+#dropdown-menu ul li:hover {
+    background-color: #735cff; /* Purple color on hover */
 }
 
 button.close-button:hover {
@@ -260,21 +285,22 @@ button.close-button:hover {
     display: none;
 }
 
-
-
+#username-box{
+height: 0px;
+}
 
 /* Ensuring the username box is visually distinct */
-#username-box {
-    display: flex; /* Relative positioning for dropdown */
+#username-box, #wallet-box {
+    display:inline-flex; /* Relative positioning for dropdown */
     flex-direction:row;
     align-items: center;
     justify-content:space-around;
-    height: 0px;
     text-align:center;
     width: 100px;
-    padding: 17px;
+    padding: 16px;
     margin-top:6px;
-    margin-bottom: 8px;
+
+    margin-bottom: -11px;
     background-color: #4CAF50; /* Green background */
     color: white;
     cursor: pointer;
@@ -283,13 +309,15 @@ button.close-button:hover {
     z-index: 1;
 }
 
+#wallet-box {
+    background-color:#735cff;
+
 
 /* Fixing the dropdown styling */
 #dropdown-menu {
     display: none;
     position: absolute; /* Positioned relative to the username-box */
-    top: 100%; /* Align it below the username box */
-    right: 0;
+    max-width 10px
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -312,4 +340,5 @@ button.close-button:hover {
     text-decoration: none;
     color: #ffffff;
 }
+
 
