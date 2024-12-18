@@ -38,14 +38,13 @@ h2 {
 }
 
 #move-dropdown-box {
-  display: inline-flex;
-  padding-left: 0;
-  flex-direction: column;
-  max-width: 132px;
-  align-items: flex-end; /* Aligns items to the right */
+    display: inline-flex;
+    padding-left: 20px;
+    flex-direction: column;
+    max-width: 110px;
+    align-items: flex-start;
+    translate: 0% -3%;
 }
-
-
 
 .modal-content {
     min-height: 380px;
