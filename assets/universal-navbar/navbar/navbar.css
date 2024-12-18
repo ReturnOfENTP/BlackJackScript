@@ -37,6 +37,14 @@ h2 {
     overflow-y: auto;
 }
 
+#move-dropdown-box {
+  display: inline-flex;
+  padding-left: 0;
+  flex-direction: column;
+  max-width: 132px;
+  align-items: flex-end; /* Aligns items to the right */
+}
+
 
 
 .modal-content {
@@ -228,26 +236,27 @@ nav {
     border-color:rgb(8 31 68);
 }
 
-#dropdown-menu { 
-left: 0; /* Align to the left edge of #username-box */
-    width: 100%; /* Match the width of #username-box */
-}
-
 #dropdown-menu ul {
-    background-color:rgb(113 137 176);
+    display:flex;
+     margin-left: auto;
+    background-color:#0d213f;
      list-style-type: none;
         
     
 }
 
 #dropdown-menu ul li {
-    padding: 2px; /* Add padding to create the rectangular block area */
-    transition: background-color 0.3s ease; /* Smooth transition effect */
+    padding: 2px;
+    display: flex;
+    transition: background-color 0.3s ease;
+    flex-direction: column;
+    align-items: flex-start;
     
 }
 
 #dropdown-menu ul li:hover {
-    background-color: #735cff; /* Purple color on hover */
+    background-color: rgb(160 19 96 / 50%); /* Purple color on hover */
+    
 }
 
 button.close-button:hover {
@@ -323,22 +332,3 @@ height: 0px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 10; /* Ensure the dropdown is above other content */
 }
-
-
-/* Ensuring the dropdown items are visually correct */
-#dropdown-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#dropdown-menu ul li {
-    padding: 10px;
-}
-
-#dropdown-menu ul li a {
-    text-decoration: none;
-    color: #ffffff;
-}
-
-
