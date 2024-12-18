@@ -8,12 +8,20 @@
    
 </head>
 <body>
+
+    
     
     <nav id="absolute-nav-section">
 
         <button id="login-button">Login</button>
 
-        
+        <div id="sliding-main-container">
+            <h2>Sliding Panel</h2>
+            <p>This is the content of the sliding panel.</p>
+        </div>
+        <button id="slide-toggle">
+            <img src="./assets/images/icon.svg" alt="Toggle" />
+        </button>
     
         <!-- Modal Structure -->
         <div id="login-modal" class="modal">
@@ -80,9 +88,11 @@
             </div>
         </div>
         <div id="user-info" class="hidden">
-            <span id="username-box"></span>
+            <div id="username-box"></div>
+
             
-            <div id="dropdown-menu" class="dropdown hidden">
+
+            <div id="dropdown-menu" class="hidden">
                 <ul>
                     <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/transactions">Transactions</a></li>
@@ -101,18 +111,21 @@
                 </ul>
             </div>
         </div>
+        
+      
 
     </nav>
     
 
-    <div id="sliding-main-container">
-        <h2>Sliding Panel</h2>
-        <p>This is the content of the sliding panel.</p>
-    </div>
-    <button id="slide-toggle">
-        <img src="./assets/images/icon.svg" alt="Toggle" />
-    </button>
+    
 
     <!-- JavaScript Files should be at the bottom -->
-    <script src="assets/universal-navbar/scripts/main.js"></script>
+    <script defer src="assets/universal-navbar/scripts/main.js"></script>
+
+    <script>
+        window.onload = function() {
+            // Insert random text into the username-box
+            document.getElementById("username-box").innerText = "Random Username";
+        }; 
+    </script>
 </body>

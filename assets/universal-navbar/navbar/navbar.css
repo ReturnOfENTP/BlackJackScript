@@ -9,6 +9,10 @@ body {
     margin: 0; /* Remove default body margin */
 }
 
+#login-button {
+
+}
+
 /* Modal Header */
 h2 {
     text-align: center;
@@ -18,14 +22,14 @@ h2 {
 /* Sliding Main Section */
 #sliding-main-container {
     position: fixed;
-    top: -10;
+    margin-top: 56px;
     right: -100%; /* Initially hidden */
     width: 300px;
     height: 100%;
     background-color: rgba(9, 36, 80, 0.95); /* Match your design */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 0.5s ease; /* Smooth slide-in effect */
-    z-index: 1000; /* Ensure it's above other elements */
+    z-index: 10; /* Ensure it's above other elements */
     padding: 20px;
     color: white;
     overflow-y: auto;
@@ -211,14 +215,14 @@ nav {
 }
 
 #absolute-nav-section {
-    position: static;
+    display:flex;
+    flex-direction: row-reverse;
     padding: 5px;
     padding-right:100px;
     background-color:rgb(9 36 80);
     border-width: 3px;       /* Set the border width */
     border-style: solid;     /* Set the border style (solid, dashed, dotted, etc.) */
     border-color:rgb(8 31 68);
-    right: 100px
 }
 
 button.close-button:hover {
@@ -249,24 +253,51 @@ button.close-button:hover {
 
 /* Add transition for fading out the modal */
 #login-modal {
-    transition: opacity 0.5s ease;
+    transition: opacity .7s ease;
 }
 
 .hidden {
     display: none;
 }
 
-/* Dropdown menu styles */
+
+
+
+/* Ensuring the username box is visually distinct */
+#username-box {
+    display: flex; /* Relative positioning for dropdown */
+    flex-direction:row;
+    align-items: center;
+    justify-content:space-around;
+    height: 0px;
+    text-align:center;
+    width: 100px;
+    padding: 17px;
+    margin-top:6px;
+    margin-bottom: 8px;
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    cursor: pointer;
+    border: transparent;  
+    border-radius: 5px; 
+    z-index: 1;
+}
+
+
+/* Fixing the dropdown styling */
 #dropdown-menu {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: absolute; /* Positioned relative to the username-box */
+    top: 100%; /* Align it below the username box */
     right: 0;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Ensure the dropdown is above other content */
 }
 
+
+/* Ensuring the dropdown items are visually correct */
 #dropdown-menu ul {
     list-style: none;
     padding: 0;
@@ -279,15 +310,6 @@ button.close-button:hover {
 
 #dropdown-menu ul li a {
     text-decoration: none;
-    color: black;
+    color: #ffffff;
 }
-
-/* Username box styling */
-#username-box {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-}
-
 

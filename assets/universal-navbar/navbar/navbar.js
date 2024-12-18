@@ -1,5 +1,3 @@
-
-
 // Modal toggle logic
 
 const loginButton = document.getElementById('login-button');
