@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded, script initialized');
 
-    // Function to handle form submission
     const handleFormSubmit = async (form, url, successMessage, errorMessage, isSignUp = false) => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
@@ -35,58 +34,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Function to update UI after login or sign-up
     const updateUIAfterLogin = (userData) => {
         console.log('Updating UI with user data:', userData);
-    
+
         // Hide login/signup modals
         const loginModal = document.getElementById('login-modal');
         const signupModal = document.getElementById('signup-modal');
 
-        if (loginModal) { 
+        if (loginModal) {
             loginModal.classList.remove('show');
             loginModal.classList.add('hidden');
         }
-        console.log('Login Modal:', loginModal);
-        if (signupModal) signupModal.classList.add('hidden');
-    
+        if (signupModal) {
+            signupModal.classList.remove('show');
+            signupModal.classList.add('hidden');
+        }
+
         // Hide login button and show user-info
         const loginButton = document.getElementById('login-button');
-        if (loginButton) loginButton.style.display = 'none';
-    
         const userInfo = document.getElementById('user-info');
         const usernameBox = document.getElementById('username-box');
         const dropdownMenu = document.getElementById('dropdown-menu');
-    
+        const walletBox = document.getElementById('wallet-box');
+
+        if (loginButton) loginButton.style.display = 'none';
         if (userInfo) userInfo.classList.remove('hidden');
+
         if (usernameBox) {
-            // Set the logged-in username
             usernameBox.textContent = userData.username;
-    
-            // Add click listener for dropdown only once
+
+            // Add click listener to toggle dropdown
             if (!usernameBox.hasListener) {
                 usernameBox.addEventListener('click', () => {
                     dropdownMenu.classList.toggle('hidden');
                 });
-                usernameBox.hasListener = true;
+                usernameBox.hasListener = true; // Custom flag to avoid duplicate listeners
             }
         }
-    
-        // Populate dropdown dynamically if empty
+
+        // Populate dropdown menu dynamically
         if (dropdownMenu && dropdownMenu.children.length === 0) {
-            dropdownMenu.innerHTML = ''; // Clear any previous content
+            dropdownMenu.innerHTML = ''; // Clear previous items
             const dropdownItems = [
                 { text: 'Profile', action: '#profile' },
                 { text: 'Settings', action: '#settings' },
                 { text: 'Sign Out', action: '#signout' },
             ];
-    
+
             dropdownItems.forEach(item => {
                 const li = document.createElement('li');
                 const link = document.createElement('a');
                 link.href = item.action;
                 link.textContent = item.text;
-    
+
                 li.appendChild(link);
                 li.addEventListener('click', () => {
                     console.log(`Clicked: ${item.text}`);
@@ -95,24 +95,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropdownMenu.appendChild(li);
             });
         }
-    
-        console.log('Navbar updated for logged-in user.');
+
+        // Update wallet box with game balance
+        if (walletBox) {
+            const gameBalance = userData.wallet || '0.00000000'; // Default balance
+            walletBox.textContent = `${gameBalance} BTC`;
+        }
+
+        console.log('UI updated for logged-in user.');
     };
-    
 
     const signOutUser = () => {
+        console.log('Signing out user...');
         localStorage.removeItem('user');
         window.location.reload();
     };
 
-    // Observe DOM for form elements
     const observeForms = () => {
         const observer = new MutationObserver(() => {
             const loginForm = document.getElementById('login-form');
             const signupForm = document.getElementById('signup-form');
 
             if (loginForm) {
-                observer.disconnect();
+                observer.disconnect(); // Stop observing once form is found
                 loginForm.addEventListener('submit', (event) => {
                     event.preventDefault();
                     handleFormSubmit(
@@ -125,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (signupForm) {
-                observer.disconnect();
+                observer.disconnect(); // Stop observing once form is found
                 signupForm.addEventListener('submit', (event) => {
                     event.preventDefault();
                     handleFormSubmit(
@@ -144,5 +149,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     observeForms();
 });
-
-

@@ -44,6 +44,16 @@ h2 {
     max-width: 110px;
     align-items: flex-start;
     translate: 0% -3%;
+
+    
+}
+
+#wallet-box {
+display:flex;
+justify-content:center;
+    height:0px;
+    font-size: 13px; /* Adjust the font size for the wallet text */
+    line-height: 1.0;
 }
 
 .modal-content {
@@ -331,3 +341,56 @@ height: 0px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 10; /* Ensure the dropdown is above other content */
 }
+
+#sliding-main-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    /* Optional: Add sliding effect (if you’re using JS for sliding) */
+ }
+ 
+ #chat-slider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* Optional: Hide chat slider initially */
+    display: none;
+ }
+ 
+ #chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    margin-bottom: 10px;
+ }
+ 
+ .chat-message {
+    margin-bottom: 5px;
+ }
+ 
+ #chat-input {
+    padding: 5px;
+    margin-right: 10px;
+    width: 75%;
+    border: 1px solid #ccc;
+ }
+ 
+ #send-message {
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #444;
+ }

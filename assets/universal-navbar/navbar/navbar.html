@@ -18,6 +18,14 @@
         <div id="sliding-main-container">
             <h2>Sliding Panel</h2>
             <p>This is the content of the sliding panel.</p>
+
+ <div id="chat-slider" class="chat-slider">
+        <div id="chat-box" class="chat-box"></div>
+        <input id="chat-input" type="text" placeholder="Type a message...">
+        <button id="send-message" onclick="handleSendMessage()">Send</button>
+    </div>
+</div>
+
         </div>
         <button id="slide-toggle">
             <img src="./assets/images/icon.svg" alt="Toggle" />
@@ -89,11 +97,8 @@
         </div>
         <div id="user-info" class="hidden">
             <div id="wallet-box"></div>
+            
             <div id="username-box"></div>
-            
-
-            
-
             <div id="dropdown-menu" class="hidden">
                 <ul <ul id="move-dropdown-box">
                     <li><a href="/dashboard">Dashboard</a></li>

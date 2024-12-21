@@ -432,4 +432,111 @@ document.addEventListener("DOMContentLoaded", function () {
     startNewGame();
     
 
+});document.addEventListener("DOMContentLoaded", function () {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // WebSocket connection to the server
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onopen = () => {
+        console.log('Connected to chat server');
+    };
+
+    socket.onmessage = (event) => {
+        let messageData = event.data;
+
+        if (messageData instanceof Blob) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const parsedData = JSON.parse(reader.result);
+
+                    if (Array.isArray(parsedData)) {
+                        renderChat(parsedData);
+                    } else {
+                        console.error('Received message is not an array:', parsedData);
+                    }
+                } catch (error) {
+                    console.error('Error parsing WebSocket message:', error);
+                }
+            };
+            reader.readAsText(messageData);
+        } else {
+            try {
+                const parsedData = JSON.parse(messageData);
+
+                if (Array.isArray(parsedData)) {
+                    renderChat(parsedData);
+                } else {
+                    console.error('Received message is not an array:', parsedData);
+                }
+            } catch (error) {
+                console.error('Error parsing WebSocket message:', error);
+            }
+        }
+    };
+
+    function renderChat(messages) {
+        const chatBox = document.getElementById('chat-box');
+
+        // Ensure that chat-box exists before modifying it
+        if (!chatBox) {
+            console.error('chat-box element is not available');
+            return;
+        }
+
+        // Ensure messages is an array
+        if (Array.isArray(messages)) {
+            // Add each message to the chat box
+            messages.forEach((msg) => {
+                if (msg.username && msg.text) {
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('chat-message');
+                    messageElement.innerHTML = `<strong>${msg.username}:</strong> ${msg.text}`;
+                    chatBox.appendChild(messageElement);
+                } else {
+                    console.warn('Message missing username or text:', msg);
+                }
+            });
+
+            // Scroll to the bottom to show the latest message
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } else {
+            console.error('Expected messages to be an array, but got:', messages);
+        }
+    }
+
+    function sendMessage(username, text) {
+        const message = {
+            username: username || 'Guest', // Default to 'Guest' if not logged in
+            text: text,
+        };
+
+        socket.send(JSON.stringify(message));
+    }
+
+    function handleSendMessage() {
+        const chatInput = document.getElementById('chat-input');
+        const username = document.getElementById('username-box') ? document.getElementById('username-box').textContent : 'Guest';
+        const message = chatInput.value.trim();
+
+        if (message) {
+            sendMessage(username, message);
+            chatInput.value = ''; // Clear the input box
+        }
+    }
+
+    // Attach event listener to send button
+    const sendButton = document.getElementById('send-message');
+    if (sendButton) {
+        sendButton.addEventListener('click', handleSendMessage);
+    }
 });
